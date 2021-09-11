@@ -34,7 +34,7 @@ namespace ModuleServicePOS
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<ISummaryOfReceivedService, SummaryOfReceivedService>();
-
+            
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".ModuleServicePOS.Session";
@@ -69,6 +69,8 @@ namespace ModuleServicePOS
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}/{id?}");
             });
+            //dbInitializer
+            SeedMethod.Initialize(app.ApplicationServices);
         }
     }
 }

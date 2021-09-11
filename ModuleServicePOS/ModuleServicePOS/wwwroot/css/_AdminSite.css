@@ -152,7 +152,13 @@ a.article:hover {
     min-height: 100vh;
     transition: all 0.3s;
 }
+/* ---------------------------------------------------
+    SELECT WITH MULTIPLE ALLOW WIDTH STYLE
+----------------------------------------------------- */
 
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 100%;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
