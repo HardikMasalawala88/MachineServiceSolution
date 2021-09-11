@@ -1,4 +1,5 @@
-﻿using ModuleServicePOS.Data.ModelClasses;
+﻿using ModuleServicePOS.Data.FormModel;
+using ModuleServicePOS.Data.ModelClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,5 +45,7 @@ namespace ModuleServicePOS.Data
         [Required]
         public virtual IEnumerable<string> ProductStatusList { get; set; }
         public virtual IEnumerable<string> SummaryOfReceivedList { get; set; }
+        public virtual EstimateDetailsFormModel EstimateDetails { get; set; }
+        public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
     }
 }
