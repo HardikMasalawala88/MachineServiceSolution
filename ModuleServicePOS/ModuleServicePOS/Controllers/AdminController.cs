@@ -30,7 +30,7 @@ namespace ModuleServicePOS.Controllers
         }
         public IActionResult Index()
         {
-            return View(_context.OrderDetails.OrderBy(s => s.Id).ToList());
+            return View(_orderService.GetOrders());
         }
 
         [HttpGet]
