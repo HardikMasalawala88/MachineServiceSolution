@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace ModuleServicePOS.Data.ModelClasses
             entityBuilder.Property(t => t.Description).IsRequired();
             entityBuilder.Property(t => t.ItemAddDate).IsRequired();
             entityBuilder.Property(t => t.Amount).IsRequired();
+            entityBuilder.Property(o => o.Amount).HasColumnType("decimal(18,4)");
         }
     }
 }

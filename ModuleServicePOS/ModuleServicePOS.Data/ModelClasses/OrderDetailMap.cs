@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace ModuleServicePOS.Data.ModelClasses
             entityBuilder.Property(t => t.DatePrepared).IsRequired();
             entityBuilder.Property(t => t.TechnicianNote).IsRequired();
             entityBuilder.Property(t => t.ProductStatus).IsRequired();
-
+            entityBuilder.Property(o => o.SubTotal).HasColumnType("decimal(18,4)");
+            entityBuilder.Property(o => o.GrandTotal).HasColumnType("decimal(18,4)");
             //entityBuilder.HasMany(t => t.SummaryOfReceived).WithOne(u => u.OrderDetails);
-                        
+
             //entityBuilder.HasOne(t => t.SummaryOfReceived)
             //             .WithOne(u => u.OrderDetails)
             //            .HasForeignKey<SummaryOfReceived>(x => x.OrderId).IsRequired();
