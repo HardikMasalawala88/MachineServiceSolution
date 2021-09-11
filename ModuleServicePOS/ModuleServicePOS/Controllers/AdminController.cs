@@ -72,7 +72,7 @@ namespace ModuleServicePOS.Controllers
                     Id = orderDetailItem.Id
                 };
                 orderDetails.SummaryOfReceivedList = _summaryOfReceivedService.GetAllByOrderId(id).ToList().Select(x => x.ItemName);
-                orderDetails.EstimateDetailsList = _estimateDetailService.GetAllByOrderId(id).ToList().Select(item => _mappingEstimateDetailsToEstimateDetailsFormModel(item));
+                orderDetails.EstimateDetailsList = _estimateDetailService.GetAllByOrderId(id).Where(x => x.IsDelete != true).ToList().Select(item => _mappingEstimateDetailsToEstimateDetailsFormModel(item));
             }
             else {
                 orderDetails.PreparedBy = HttpContext.Session.GetString(Constants.UName);
@@ -111,6 +111,8 @@ namespace ModuleServicePOS.Controllers
                     ClientName = orderDetailsFormModel.ClientName,
                     DatePrepared = orderDetailsFormModel.DatePrepared,
                     TechnicianNote = orderDetailsFormModel.TechnicianNote,
+                    SubTotal = orderDetailsFormModel.SubTotal,
+                    GrandTotal = orderDetailsFormModel.GrandTotal,
                     ProductStatus = String.Join(",", orderDetailsFormModel.ProductStatusList),
                 };
             }
@@ -143,18 +145,17 @@ namespace ModuleServicePOS.Controllers
 
         #region Estimate
         [HttpPost]
-        public IActionResult AddEstimate(EstimateDetailsFormModel estimateDetailsModel)
+        public IActionResult AddEstimate(OrderDetailsFormModel orderDetailsFormModel)
         {
             EstimateDetails estimateDetails = new EstimateDetails();
-            if (ModelState.IsValid)
-            {
-                estimateDetails.Description = estimateDetailsModel.Description;
-                estimateDetails.Amount = estimateDetailsModel.Amount;
-                estimateDetails.SerialNo = estimateDetailsModel.SerialNo;
-                estimateDetails.ItemAddDate = estimateDetailsModel.ItemAddDate;
-                estimateDetails.ItemAddDate = DateTime.Now;
-                _estimateDetailService.Insert(estimateDetails);
-            }
+
+            estimateDetails.Description = orderDetailsFormModel.EstimateDetails.Description;
+            estimateDetails.Amount = orderDetailsFormModel.EstimateDetails.Amount;
+            estimateDetails.SerialNo = orderDetailsFormModel.EstimateDetails.SerialNo;
+            estimateDetails.ItemAddDate = DateTime.Now;
+            estimateDetails.OrderDetailId = orderDetailsFormModel.EstimateDetails.OrderDetailId;
+            _estimateDetailService.Insert(estimateDetails);
+
             return RedirectToAction("Repair",new { id = estimateDetails.OrderDetailId });
         }
 
