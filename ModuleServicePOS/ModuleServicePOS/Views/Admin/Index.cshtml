@@ -1,19 +1,22 @@
 ﻿@model IEnumerable<ModuleServicePOS.Data.ModelClasses.OrderDetails>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
 }
 @if (Model != null)
 {
-    <table class="table table-hover table-fixed" border="0" cellspacing="5" cellpadding="5">
-        <tbody>
-            <tr>
-                <td>Date range:</td>
-                <td><input type="text" id="min" name="min"></td>
-                <td><input type="text" id="max" name="max"></td>
-            </tr>
-
-        </tbody>
-    </table>
+    <div class="row mt-2">
+        <div class="col-lg-2">
+            <label>Date range:</label>
+        </div>
+        <div class="col-lg-2">
+            <input type="text" id="min" class="form-control" name="min">
+        </div>
+        <div class="col-lg-2">
+            <input type="text" id="max" class="form-control" name="max">
+        </div>
+    </div>
+    
     <table class="table table-hover table-fixed makeDatatable" id="Orderlist">
         <thead>
             <tr>
