@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ModuleServicePOS.Data.ModelClasses.OrderDetails>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@if (Model != null)
+{
+    <table class="table table-hover table-fixed" border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td>Date range:</td>
+                <td><input type="text" id="min" name="min"></td>
+                <td><input type="text" id="max" name="max"></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-hover table-fixed makeDatatable" id="Orderlist">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date Prepared</th>
+                <th>Client Name</th>
+                <th>Mobile Number</th>
+                <th>Address</th>
+                <th>Prepared By</th>
+                <th>Model</th>
+                <th>S/N</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.IsClosed == true? "bg-success text-white" : "")">
+                    <th scope="row">@item.Id</th>
+                    <td>@item.DatePrepared.Value.ToString("yyyy/MM/dd")</td>
+                    <td>@item.ClientName</td>
+                    <td>@item.MobileNo</td>
+                    <td>@item.Address</td>
+                    <td>@item.PreparedBy</td>
+                    <td>@item.Model</td>
+                    <td>@item.SerialNo</td>
+                    <td><a class="btn btn-primary" href="/Admin/Repair/@item.Id"> EDIT</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

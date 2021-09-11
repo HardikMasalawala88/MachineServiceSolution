@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ModuleServicePOS/ModuleServicePOS.Service/bin/Debug/net5.0
+/ModuleServicePOS/ModuleServicePOS.Service/obj
+/ModuleServicePOS/ModuleServicePOS.Repository/obj
+/ModuleServicePOS/ModuleServicePOS/bin/Debug/net5.0
+/ModuleServicePOS/ModuleServicePOS.Data/bin/Debug/net5.0
+/ModuleServicePOS/ModuleServicePOS.Data/obj
+/ModuleServicePOS/ModuleServicePOS/obj
+/ModuleServicePOS/ModuleServicePOS.Repository/bin/Debug/net5.0
+/ModuleServicePOS/.vs/ModuleServicePOS

@@ -1,0 +1,107 @@
+﻿@model ModuleServicePOS.Data.OrderDetailsFormModel
+@using Microsoft.AspNetCore.Http
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Repair";
+
+    var ReceivedItemListArray =new string[] { "LCD", "SYSTEM BOARD", "CPUFAN", "TOUCH PAD", "HINGE", "HDD", "SSD","RAM", "DV-WRITER", "AC-ADAPTER", "MOUSE" };
+    var ReceivedItemList = new List<SelectListItem>();
+    foreach (var item in ReceivedItemListArray)
+    {
+        ReceivedItemList.Add( new SelectListItem { Text = item,Value = item});
+    }
+
+    var ProductStatusArray =new string[] { "REPAIR", "EXCHANGE", "UPGRADE", "RETURNED NOT REPAIRED" };
+    var ProductStatusList = new List<SelectListItem>();
+    foreach (var item in ProductStatusArray)
+    {
+        ProductStatusList.Add( new SelectListItem { Text = item,Value = item});
+    }
+}
+
+<form method="post" asp-action="Repair" asp-controller="Admin">
+    <div class="container">
+        <div class="row">
+            <h2>Computer Repair And Service Job Card</h2>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="PreparedBy"></label>
+                <input type="text" class="form-control" readonly asp-for="PreparedBy" value="@Model.PreparedBy" required />
+                <span asp-validation-for="PreparedBy"></span>
+            </div>
+            <div class="col">
+                <label asp-for="SerialNo"></label>
+                <input type="text" class="form-control" readonly asp-for="SerialNo" required />
+                <span asp-validation-for="SerialNo"></span>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="ClientName"></label>
+                <input type="text" asp-for="ClientName" class="form-control" required />
+                <span asp-validation-for="ClientName"></span>
+
+            </div>
+            <div class="col">
+                <label asp-for="MobileNo"></label>
+                <input type="text" asp-for="MobileNo" class="form-control" required />
+                <span asp-validation-for="MobileNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="Address"></label>
+                <textarea asp-for="Address" required class="form-control"></textarea>
+                <span asp-validation-for="Address"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
+                <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
+                        asp-items="@(new SelectList(ReceivedItemList,"Text","Value"))">
+                    <option disabled>Please select one</option>
+                </select>
+                <span asp-validation-for="SummaryOfReceivedList"></span>
+            </div>
+            <div class="col">
+                <label asp-for="ProductStatusList">Product Status</label>
+                <select asp-for="ProductStatusList" class="selectpicker" multiple data-live-search="true" onse
+                        asp-items="@(new SelectList(ProductStatusList,"Text","Value"))">
+                    <option disabled>Please select one</option>
+                </select>
+                <span asp-validation-for="ProductStatusList"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="Model"></label>
+                <input type="text" class="form-control" asp-for="Model" required />
+                <span asp-validation-for="Model"></span>
+            </div>
+            <div class="col">
+                <label asp-for="DatePrepared"></label>
+                <input type="date" class="form-control" asp-for="DatePrepared" required />
+                <span asp-validation-for="DatePrepared"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="TechnicianNote"></label>
+                <textarea asp-for="TechnicianNote" required class="form-control"></textarea>
+                <span asp-validation-for="TechnicianNote"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="IsClosed">Order Completed?</label>
+                <input type="checkbox" asp-for="IsClosed" />
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary" id="btnSubmitData">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
