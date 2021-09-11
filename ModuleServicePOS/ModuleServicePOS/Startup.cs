@@ -70,6 +70,8 @@ namespace ModuleServicePOS
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}/{id?}");
             });
+            //dbInitializer
+            SeedMethod.Initialize(app.ApplicationServices);
         }
     }
 }
