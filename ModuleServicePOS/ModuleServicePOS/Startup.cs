@@ -34,7 +34,8 @@ namespace ModuleServicePOS
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<ISummaryOfReceivedService, SummaryOfReceivedService>();
-            
+            services.AddTransient<IEstimateDetailService, EstimateDetailService>();
+
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".ModuleServicePOS.Session";

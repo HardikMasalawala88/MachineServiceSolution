@@ -18,6 +18,7 @@ namespace ModuleServicePOS.Data
         public DbSet<UserDetails> Users { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<SummaryOfReceived> SummaryOfReceiveds { get; set; }
+        public DbSet<EstimateDetails> EstimateDetails { get; set; }
 
         #endregion
         #region ON MODEL CREATION 
@@ -27,6 +28,7 @@ namespace ModuleServicePOS.Data
             new UserMap(modelBuilder.Entity<UserDetails>());
             new OrderDetailMap(modelBuilder.Entity<OrderDetails>());
             new SummaryOfReceivedMap(modelBuilder.Entity<SummaryOfReceived>());
+            new EstimateDetailsMap(modelBuilder.Entity<EstimateDetails>());
 
             #region COLUMN CONFIGURATION
             //modelBuilder.Entity<UserDetails>().Property(f => f.Id).ValueGeneratedOnAdd();
