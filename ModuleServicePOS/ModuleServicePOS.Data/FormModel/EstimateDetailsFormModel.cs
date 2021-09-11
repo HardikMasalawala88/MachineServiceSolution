@@ -10,14 +10,14 @@ namespace ModuleServicePOS.Data.FormModel
 {
     public class EstimateDetailsFormModel : BaseEntity
     {
-        [Display(Name = "Description: ")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
-        public DateTime? ItemAddDate { get; set; }
-        public string SerialNo { get; set; }
-        public bool? IsDelete { get; set; }
-
-        [Display(Name = "Amount: ")]
+        [Display(Name = "Amount")]
         public decimal Amount { get; set; }
+        [Display(Name = "Amount")]
+        public string SerialNo { get; set; }
+        public DateTime? ItemAddDate { get; set; }
+        public bool? IsDelete { get; set; }
         public long OrderDetailId { get; set; }
         public virtual OrderDetails OrderDetail { get; set; }
     }
