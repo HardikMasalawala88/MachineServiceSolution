@@ -5,17 +5,21 @@
 }
 @if (Model != null)
 {
-    <div class="row mt-2">
-        <div class="col-lg-2">
-            <label>Date range:</label>
-        </div>
-        <div class="col-lg-2">
-            <input type="text" id="min" class="form-control" name="min">
-        </div>
-        <div class="col-lg-2">
-            <input type="text" id="max" class="form-control" name="max">
-        </div>
+<div class="row mt-2">
+    <div class="col-lg-2">
+        <label>Date range:</label>
     </div>
+    <div class="col-lg-2">
+        <input type="text" id="min" class="form-control" name="min">
+    </div>
+    <div class="col-lg-2">
+        <input type="text" id="max" class="form-control" name="max">
+    </div>
+    <div class="col-lg-2">
+        <a class="float-right btn btn-outline-primary" asp-controller="Admin" asp-action="Repair">Add Repair</a>
+    </div>
+    <hr class="mt-1 mb-1" />
+</div>
     
     <table class="table table-hover table-fixed makeDatatable" id="Orderlist">
         <thead>

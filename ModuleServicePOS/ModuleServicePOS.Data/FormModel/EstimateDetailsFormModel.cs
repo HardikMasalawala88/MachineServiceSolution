@@ -14,7 +14,7 @@ namespace ModuleServicePOS.Data.FormModel
         public string Description { get; set; }
         [Display(Name = "Amount")]
         public decimal Amount { get; set; }
-        [Display(Name = "Amount")]
+        [Display(Name = "SerialNo")]
         public string SerialNo { get; set; }
         public DateTime? ItemAddDate { get; set; }
         public bool? IsDelete { get; set; }

@@ -19,8 +19,8 @@
     }
 
 
-    Model.SubTotal = Model.EstimateDetailsList.Sum(x => x.Amount);
-    Model.GrandTotal = Model.EstimateDetailsList.Sum(x => x.Amount);
+    Model.SubTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
+    Model.GrandTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
 }
 
 <form method="post" asp-action="Repair" asp-controller="Admin">

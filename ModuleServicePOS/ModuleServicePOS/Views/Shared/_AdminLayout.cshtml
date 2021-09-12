@@ -43,7 +43,7 @@
                                 <a class="nav-link" asp-controller="Admin" asp-action="Index">Order List</a>
                             </li>
                             <li>
-                                <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Repair">Add Repair</a>
+                                <a class="nav-link" asp-controller="Admin" asp-action="Repair">Add Repair</a>
                             </li>
                         </ul>
                     </li>
@@ -51,10 +51,10 @@
                 else
                 {
                     <li>
-                        <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                     </li>
                     <li>
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Registration">Registration</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Registration">Registration</a>
                     </li>
                 }
 
@@ -78,13 +78,13 @@
                                 @if (userSession != null)
                                 {
                                     <li class="nav-item active">
-                                        <a class="nav-link text-info" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                        <a class="nav-link text-info" asp-controller="Account" asp-action="Logout">Logout</a>
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-info" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                        <a class="nav-link text-info" asp-controller="Account" asp-action="Login">Login</a>
                                     </li>
                                 }
                             </ul>
