@@ -3,6 +3,7 @@ using ModuleServicePOS.Data.ModelClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using static ModuleServicePOS.Data.ModelClasses.EnumSystemType;
 
 namespace ModuleServicePOS.Data
 {
@@ -34,6 +35,10 @@ namespace ModuleServicePOS.Data
         public string Model { get; set; }
 
         [Required]
+        [Display(Name = "Order Status")]
+        public string OrderStatus { get; set; }
+
+        [Required]
         [Display(Name = "Serial No.")]
         public string SerialNo { get; set; }
 
@@ -48,10 +53,16 @@ namespace ModuleServicePOS.Data
         public decimal GrandTotal { get; set; }
 
         public bool IsClosed { get; set; }
+
+        [Required]
+        [Display(Name = "System Type")]
+        public SystemType SystemType { get; set; }
         [Required]
         public virtual IEnumerable<string> ProductStatusList { get; set; }
         public virtual IEnumerable<string> SummaryOfReceivedList { get; set; }
         public virtual EstimateDetailsFormModel EstimateDetails { get; set; }
         public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
+
+        
     }
 }

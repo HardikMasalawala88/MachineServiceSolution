@@ -1,5 +1,6 @@
 ﻿@model ModuleServicePOS.Data.OrderDetailsFormModel
 @using Microsoft.AspNetCore.Http
+@using static ModuleServicePOS.Data.ModelClasses.EnumSystemType;
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Repair";
@@ -18,6 +19,12 @@
         ProductStatusList.Add(new SelectListItem { Text = item, Value = item });
     }
 
+    var OrderStatusArray = new string[] { "NOT-STARTED", "INPROGRESS", "REPAIR", "NOTREPAIRED" };
+    var OrderStatusList = new List<SelectListItem>();
+    foreach (var item in OrderStatusArray)
+    {
+        OrderStatusList.Add(new SelectListItem { Text = item, Value = item });
+    }
 
     Model.SubTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
     Model.GrandTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
@@ -26,7 +33,15 @@
 <form method="post" asp-action="Repair" asp-controller="Admin">
     <div class="container">
         <div class="row">
-            <h2>Computer Repair And Service Job Card</h2>
+            <div class="col-8">
+                <h2>Computer Repair And Service Job Card</h2>
+            </div>
+            <div class="col">
+                <label asp-for="IsClosed">Order Completed?</label>
+                <input type="checkbox" asp-for="IsClosed" />
+                <button type="submit" class="btn btn-primary float-right" id="btnSubmitData">Save</button>
+                <a class="btn btn-info float-right mr-1" asp-controller="Admin" asp-action="Index">Back</a>
+            </div>
         </div>
         <div class="row mt-2">
             <div class="col">
@@ -91,7 +106,6 @@
                 <span asp-validation-for="DatePrepared"></span>
             </div>
         </div>
-
         <div class="row mt-2">
             <div class="col">
                 <label asp-for="TechnicianNote"></label>
@@ -101,30 +115,40 @@
         </div>
         <div class="row mt-2">
             <div class="col">
+                <label asp-for="SystemType"></label>
+                <select asp-for="SystemType" class="selectpicker" multiple data-live-search="true" onse
+                        asp-items="Html.GetEnumSelectList<SystemType>()">
+                    <option disabled>Please select Type</option>
+                </select>
+                <span asp-validation-for="SystemType"></span>
+            </div>
+            <div class="col">
+                <label asp-for="OrderStatus">Order Status: </label>
+                <select asp-for="OrderStatus" class="selectpicker" data-live-search="true" onse
+                        asp-items="@(new SelectList(OrderStatusList,"Text","Value"))">
+                    <option disabled>Please select Status</option>
+                </select>
+                <span asp-validation-for="ProductStatusList"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
                 <label asp-for="SubTotal"></label>
                 <input type="hidden" class="form-control" asp-for="SubTotal" value="@Model.SubTotal" required />
-                <input type="text" readonly  class="form-control"  value="@String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @Model.SubTotal)" required />
+                <input type="text" readonly class="form-control" value="@String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @Model.SubTotal)" required />
                 <span asp-validation-for="SubTotal"></span>
             </div>
             <div class="col">
                 <label asp-for="GrandTotal"></label>
                 <input type="hidden" class="form-control" asp-for="GrandTotal" value="@Model.GrandTotal" required />
-                <input type="text" readonly class="form-control"  value="@String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @Model.GrandTotal)" required />
+                <input type="text" readonly class="form-control" value="@String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @Model.GrandTotal)" required />
                 <span asp-validation-for="GrandTotal"></span>
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col">
-                <label asp-for="IsClosed">Order Completed?</label>
-                <input type="checkbox" asp-for="IsClosed" />
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-primary float-right" id="btnSubmitData">Save</button>
-                <a class="btn btn-info float-right mr-1" asp-controller="Admin" asp-action="Index">Back</a>
-            </div>
-        </div>
+       
         @{ if (Model.Id > 0)
             {
+                <hr />
                 <div class="row mt-2">
                     <div class="col">
                         <button type="button" class="btn btn-outline-primary" id="btnAddEstimate" data-toggle="modal" onclick="frmestimate.reset();" data-target="#modal-NewEstimate">Add Estimate</button>

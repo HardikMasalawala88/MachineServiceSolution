@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModuleServicePOS.Data;
 
 namespace ModuleServicePOS.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210917095257_2_ModuleService")]
+    partial class _2_ModuleService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,10 +99,6 @@ namespace ModuleServicePOS.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PreparedBy")
                         .IsRequired()
@@ -215,7 +213,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 17, 10, 23, 36, 889, DateTimeKind.Utc).AddTicks(6113),
+                            CreatedDate = new DateTime(2021, 9, 17, 9, 52, 56, 544, DateTimeKind.Utc).AddTicks(51),
                             Gender = "",
                             MailId = "SuperAdmin1@POS.com",
                             Name = "SuperAdmin1",
@@ -228,7 +226,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 17, 10, 23, 36, 889, DateTimeKind.Utc).AddTicks(6835),
+                            CreatedDate = new DateTime(2021, 9, 17, 9, 52, 56, 544, DateTimeKind.Utc).AddTicks(763),
                             Gender = "",
                             MailId = "SuperAdmin2@POS.com",
                             Name = "SuperAdmin2",

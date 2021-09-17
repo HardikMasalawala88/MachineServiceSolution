@@ -41,6 +41,12 @@ namespace ModuleServicePOS.Data.ModelClasses
         public string Model { get; set; }
 
         [Required]
+        [Display(Name = "System Type: ")]
+        public string SystemType { get; set; }
+
+        public string OrderStatus { get; set; }
+
+        [Required]
         [Display(Name = "S/N: ")]
         public string SerialNo { get; set; }
 

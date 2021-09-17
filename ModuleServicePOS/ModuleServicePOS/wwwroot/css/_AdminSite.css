@@ -152,6 +152,15 @@ a.article:hover {
     min-height: 100vh;
     transition: all 0.3s;
 }
+.bg-green {
+    background-color: #7acb7a;
+}
+.bg-red {
+    background-color: #ff5c5c;
+}
+.bg-orange {
+    background-color: #ffd07b;
+}
 /* ---------------------------------------------------
     SELECT WITH MULTIPLE ALLOW WIDTH STYLE
 ----------------------------------------------------- */

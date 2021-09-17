@@ -5,22 +5,22 @@
 }
 @if (Model != null)
 {
-<div class="row mt-2">
-    <div class="col-lg-2">
-        <label>Date range:</label>
+    <div class="row mt-2">
+        <div class="col-lg-2">
+            <label>Date range:</label>
+        </div>
+        <div class="col-lg-2">
+            <input type="text" id="min" class="form-control" name="min">
+        </div>
+        <div class="col-lg-2">
+            <input type="text" id="max" class="form-control" name="max">
+        </div>
+        <div class="col-lg-2">
+            <a class="float-right btn btn-outline-primary" asp-controller="Admin" asp-action="Repair">Add Repair</a>
+        </div>
+        <hr class="mt-1 mb-1" />
     </div>
-    <div class="col-lg-2">
-        <input type="text" id="min" class="form-control" name="min">
-    </div>
-    <div class="col-lg-2">
-        <input type="text" id="max" class="form-control" name="max">
-    </div>
-    <div class="col-lg-2">
-        <a class="float-right btn btn-outline-primary" asp-controller="Admin" asp-action="Repair">Add Repair</a>
-    </div>
-    <hr class="mt-1 mb-1" />
-</div>
-    
+
     <table class="table table-hover table-fixed makeDatatable" id="Orderlist">
         <thead>
             <tr>
@@ -31,14 +31,14 @@
                 <th>Address</th>
                 <th>Prepared By</th>
                 <th>Model</th>
-                <th>S/N</th>
-                <th>Edit</th>
+                <th class="text-center">S/N</th>
+                <th class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr class="@(item.IsClosed == true? "bg-success text-white" : "")">
+                <tr class="@((item.OrderStatus == "REPAIR") ? "bg-green " : (item.OrderStatus == "NOTREPAIRED") ? "bg-red " : "bg-orange ")">
                     <th scope="row">@item.Id</th>
                     <td>@item.DatePrepared.Value.ToString("yyyy/MM/dd")</td>
                     <td>@item.ClientName</td>
@@ -47,7 +47,11 @@
                     <td>@item.PreparedBy</td>
                     <td>@item.Model</td>
                     <td>@item.SerialNo</td>
-                    <td><a class="btn btn-primary" href="/Admin/Repair/@item.Id"> EDIT</a></td>
+                    <td>
+                        <a class="btn btn-sm btn-info" href="/Admin/Repair/@item.Id">EDIT</a>
+                        <a class="btn btn-sm btn-info" href="/Admin/Repair/@item.Id">REPAIR</a>
+                        <a class="btn btn-sm btn-info" href="/Admin/Repair/@item.Id">RETURN</a>
+                    </td>
                 </tr>
             }
         </tbody>

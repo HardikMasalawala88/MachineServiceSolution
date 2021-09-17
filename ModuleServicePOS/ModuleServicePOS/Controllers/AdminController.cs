@@ -104,6 +104,8 @@ namespace ModuleServicePOS.Controllers
                     Id = orderDetailsFormModel.Id,
                     Model = orderDetailsFormModel.Model,
                     Address = orderDetailsFormModel.Address,
+                    SystemType = String.Join(",", orderDetailsFormModel.SystemType.ToString()),
+                    OrderStatus = orderDetailsFormModel.OrderStatus.ToString(),
                     IsClosed = orderDetailsFormModel.IsClosed,
                     MobileNo = orderDetailsFormModel.MobileNo,
                     SerialNo = orderDetailsFormModel.SerialNo,
