@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedMaster>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Summary Of Received";
+}
+
+@if (Model != null)
+{
+    <div class="row mt-2">
+        <div class="col-lg-4">
+            <a class="float-right btn btn-outline-primary" asp-action="AddSummaryOfReceived" asp-controller="Admin">Add Summary Of Received</a>
+        </div>
+        <hr class="mt-1 mb-1" />
+    </div>
+
+    <table class="table table-hover table-fixed makeDatatable" id="Orderlist">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Item Name</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.ItemName</td>
+                    <td style="text-align:center">
+                        <a class="btn btn-info" href="/Admin/AddSummaryOfReceived/@item.Id">EDIT</a>
+                        <a class="btn btn-info" onclick="removeSummary(@item.Id)">DELETE</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function removeSummary(summaryId) {
+            debugger;
+            if (confirm("Are You Sure To Delete Summary Of Received..?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/RemoveSummaryOfReceived?summaryId=' + summaryId,
+                    success: function (response) {
+                        window.location.reload();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        }
+    </script>
+}

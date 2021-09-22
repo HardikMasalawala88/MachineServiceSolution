@@ -20,14 +20,16 @@ namespace ModuleServicePOS.Controllers
         private readonly IOrderService _orderService;
         private readonly ISummaryOfReceivedService _summaryOfReceivedService;
         private readonly IEstimateDetailService _estimateDetailService;
+        private readonly ISummaryOfReceivedMasterService _summaryOfReceivedMasterService;
         private IConfiguration _config;
         private ApplicationContext _context;
-        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedService summaryOfReceivedService, ApplicationContext context, IConfiguration config)
+        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedService summaryOfReceivedService, ISummaryOfReceivedMasterService summaryOfReceivedMasterService, ApplicationContext context, IConfiguration config)
         {
             _logger = logger;
             _orderService = orderService;
             _summaryOfReceivedService= summaryOfReceivedService;
             _estimateDetailService = estimateDetailService;
+            _summaryOfReceivedMasterService = summaryOfReceivedMasterService;
             _context = context;
             _config = config;
         }
@@ -66,7 +68,9 @@ namespace ModuleServicePOS.Controllers
                     Model = orderDetailItem.Model,
                     PreparedBy = orderDetailItem.PreparedBy,
                     SerialNo = orderDetailItem.SerialNo,
+                    OrderStatus = orderDetailItem.OrderStatus,
                     TechnicianNote = orderDetailItem.TechnicianNote,
+                    SystemPassword = orderDetailItem.SystemPassword,
                     ProductStatusList = orderDetailItem.ProductStatus.Split(","),
                     IsClosed = orderDetailItem.IsClosed,
                     Id = orderDetailItem.Id
@@ -77,6 +81,8 @@ namespace ModuleServicePOS.Controllers
             else {
                 orderDetails.PreparedBy = HttpContext.Session.GetString(Constants.UName);
                 orderDetails.SerialNo = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
+                var SummaryData = _summaryOfReceivedMasterService.GetAll();
+                orderDetails.SummaryDetailsList = SummaryData;
             }
             return View(orderDetails);
         }
@@ -115,14 +121,13 @@ namespace ModuleServicePOS.Controllers
                     TechnicianNote = orderDetailsFormModel.TechnicianNote,
                     SubTotal = orderDetailsFormModel.SubTotal,
                     GrandTotal = orderDetailsFormModel.GrandTotal,
+                    SystemPassword = orderDetailsFormModel.SystemPassword,
                     ProductStatus = String.Join(",", orderDetailsFormModel.ProductStatusList),
                 };
             }
             #endregion
-
             if (ModelState.IsValid)
             {
-
                 if (orderDetails.Id > 0)
                 { 
                     var record  = _orderService.UpdateOrder(_mappingOrderDetailsFormModelToOrderDetails(orderDetails));
@@ -139,7 +144,6 @@ namespace ModuleServicePOS.Controllers
                         _summaryOfReceivedServiceInsert(orderDetails.SummaryOfReceivedList, record.Id);
                     }
                 }
-                
                 return RedirectToAction("Index");
             }
             return View(orderDetails);
@@ -166,6 +170,65 @@ namespace ModuleServicePOS.Controllers
         {
             _estimateDetailService.DeleteById(estimateId);
             return RedirectToAction("Index");
+        }
+        #endregion
+
+        #region Summary of received Master
+        public IActionResult SummaryOfReceivedList()
+        {
+            return View(_summaryOfReceivedMasterService.GetAll());
+        } 
+
+        [HttpGet]
+        public IActionResult AddSummaryOfReceived(long id)
+        {
+            SummaryOfReceivedMasterFormModel summaryOfReceivedMaster = new SummaryOfReceivedMasterFormModel();
+            if (id > 0)
+            {
+                var summaryOfReceivedItem = _summaryOfReceivedMasterService.Get(id);
+                summaryOfReceivedMaster = new SummaryOfReceivedMasterFormModel
+                {
+                    ItemName = summaryOfReceivedItem.ItemName,
+                    Id = summaryOfReceivedItem.Id
+                };
+            }
+            else
+            {
+                summaryOfReceivedMaster.CreatedBy = HttpContext.Session.GetString(Constants.UName);
+            }
+            return View(summaryOfReceivedMaster);
+        }
+
+        [HttpPost]
+        public IActionResult AddSummaryOfReceived(SummaryOfReceivedMasterFormModel receivedMasterFormModel)
+        {
+            if (ModelState.IsValid)
+            {
+                SummaryOfReceivedMaster summaryOfReceivedMaster = new SummaryOfReceivedMaster();
+                if (receivedMasterFormModel.Id > 0)
+                {
+                    var SummaryList = _summaryOfReceivedMasterService.Get(receivedMasterFormModel.Id);
+                    SummaryList.ItemName = receivedMasterFormModel.ItemName;
+                    SummaryList.ModifiedDate = DateTime.Now;
+                    SummaryList.ModifiedBy = HttpContext.Session.GetString(Constants.UName);
+                    _summaryOfReceivedMasterService.Update(SummaryList);
+                }
+                else
+                {
+                    summaryOfReceivedMaster.ItemName = receivedMasterFormModel.ItemName;
+                    summaryOfReceivedMaster.CreatedDate = DateTime.Now;
+                    summaryOfReceivedMaster.CreatedBy = HttpContext.Session.GetString(Constants.UName);
+                    _summaryOfReceivedMasterService.Insert(summaryOfReceivedMaster);
+                }
+            }
+            return RedirectToAction("SummaryOfReceivedList");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveSummaryOfReceived(long summaryId)
+        {
+            _summaryOfReceivedMasterService.DeleteById(summaryId);
+            return RedirectToAction("SummaryOfReceivedList");
         }
         #endregion
     }

@@ -161,6 +161,9 @@ a.article:hover {
 .bg-orange {
     background-color: #ffd07b;
 }
+.bg-yellow {
+    background-color: #ecec84;
+}
 /* ---------------------------------------------------
     SELECT WITH MULTIPLE ALLOW WIDTH STYLE
 ----------------------------------------------------- */

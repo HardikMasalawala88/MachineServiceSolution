@@ -38,7 +38,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr class="@((item.OrderStatus == "REPAIR") ? "bg-green " : (item.OrderStatus == "NOTREPAIRED") ? "bg-red " : "bg-orange ")">
+                <tr class="@((item.OrderStatus == "REPAIR") ? "bg-green " : (item.OrderStatus == "NOTREPAIRED") ? "bg-red" : (item.OrderStatus == "INPROGRESS") ? "bg-yellow" : "bg-orange")">
                     <th scope="row">@item.Id</th>
                     <td>@item.DatePrepared.Value.ToString("yyyy/MM/dd")</td>
                     <td>@item.ClientName</td>

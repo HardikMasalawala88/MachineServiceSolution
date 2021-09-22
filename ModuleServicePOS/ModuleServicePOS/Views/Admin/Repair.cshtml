@@ -19,7 +19,7 @@
         ProductStatusList.Add(new SelectListItem { Text = item, Value = item });
     }
 
-    var OrderStatusArray = new string[] { "NOT-STARTED", "INPROGRESS", "REPAIR", "NOTREPAIRED" };
+    var OrderStatusArray = new string[] { "NOTSTARTED", "INPROGRESS", "REPAIR", "NOTREPAIRED" };
     var OrderStatusList = new List<SelectListItem>();
     foreach (var item in OrderStatusArray)
     {
@@ -37,8 +37,6 @@
                 <h2>Computer Repair And Service Job Card</h2>
             </div>
             <div class="col">
-                <label asp-for="IsClosed">Order Completed?</label>
-                <input type="checkbox" asp-for="IsClosed" />
                 <button type="submit" class="btn btn-primary float-right" id="btnSubmitData">Save</button>
                 <a class="btn btn-info float-right mr-1" asp-controller="Admin" asp-action="Index">Back</a>
             </div>
@@ -80,7 +78,7 @@
             <div class="col">
                 <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
                 <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="@(new SelectList(ReceivedItemList,"Text","Value"))">
+                        asp-items="@(new SelectList(Model.SummaryDetailsList,"Id","ItemName"))">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="SummaryOfReceivedList"></span>
@@ -143,6 +141,17 @@
                 <input type="hidden" class="form-control" asp-for="GrandTotal" value="@Model.GrandTotal" required />
                 <input type="text" readonly class="form-control" value="@String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @Model.GrandTotal)" required />
                 <span asp-validation-for="GrandTotal"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col mt-4">
+                <label asp-for="IsClosed">Order Completed?</label>
+                <input type="checkbox" asp-for="IsClosed" />
+            </div>
+            <div class="col">
+                <label asp-for="SystemPassword"></label>
+                <input type="password" name="Password" asp-for="SystemPassword" class="form-control" />
+                <span asp-validation-for="SystemPassword"></span>
             </div>
         </div>
        

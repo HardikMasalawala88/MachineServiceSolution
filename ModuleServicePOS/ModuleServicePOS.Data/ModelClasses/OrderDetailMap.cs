@@ -24,6 +24,7 @@ namespace ModuleServicePOS.Data.ModelClasses
             entityBuilder.Property(t => t.ProductStatus).IsRequired();
             entityBuilder.Property(t => t.SystemType).IsRequired();
             entityBuilder.Property(t => t.OrderStatus).IsRequired();
+            entityBuilder.Property(t => t.SystemPassword).IsRequired();
             entityBuilder.Property(o => o.SubTotal).HasColumnType("decimal(18,4)");
             entityBuilder.Property(o => o.GrandTotal).HasColumnType("decimal(18,4)");
             //entityBuilder.HasMany(t => t.SummaryOfReceived).WithOne(u => u.OrderDetails);

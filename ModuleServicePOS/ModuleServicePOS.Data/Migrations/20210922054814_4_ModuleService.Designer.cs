@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModuleServicePOS.Data;
 
 namespace ModuleServicePOS.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210922054814_4_ModuleService")]
+    partial class _4_ModuleService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,37 +166,6 @@ namespace ModuleServicePOS.Data.Migrations
                     b.ToTable("SummaryOfReceiveds");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("summaryOfReceivedMasters");
-                });
-
             modelBuilder.Entity("ModuleServicePOS.Data.UserDetails", b =>
                 {
                     b.Property<long>("Id")
@@ -250,7 +221,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 22, 7, 18, 15, 80, DateTimeKind.Utc).AddTicks(2588),
+                            CreatedDate = new DateTime(2021, 9, 22, 5, 48, 13, 482, DateTimeKind.Utc).AddTicks(8383),
                             Gender = "",
                             MailId = "SuperAdmin1@POS.com",
                             Name = "SuperAdmin1",
@@ -263,7 +234,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 22, 7, 18, 15, 80, DateTimeKind.Utc).AddTicks(3303),
+                            CreatedDate = new DateTime(2021, 9, 22, 5, 48, 13, 482, DateTimeKind.Utc).AddTicks(9112),
                             Gender = "",
                             MailId = "SuperAdmin2@POS.com",
                             Name = "SuperAdmin2",

@@ -51,8 +51,11 @@ namespace ModuleServicePOS.Data
         [Required]
         [Display(Name = "Grand Total")]
         public decimal GrandTotal { get; set; }
-
         public bool IsClosed { get; set; }
+
+        [Required]
+        [Display(Name = "System Password")]
+        public string SystemPassword { get; set; }
 
         [Required]
         [Display(Name = "System Type")]
@@ -62,6 +65,7 @@ namespace ModuleServicePOS.Data
         public virtual IEnumerable<string> SummaryOfReceivedList { get; set; }
         public virtual EstimateDetailsFormModel EstimateDetails { get; set; }
         public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
+        public virtual IEnumerable<SummaryOfReceivedMaster> SummaryDetailsList { get; set; }
 
         
     }

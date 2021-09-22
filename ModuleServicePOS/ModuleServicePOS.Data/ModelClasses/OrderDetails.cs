@@ -57,6 +57,7 @@ namespace ModuleServicePOS.Data.ModelClasses
         [Display(Name = "Product Status: ")]
         [Required]
         public string ProductStatus { get; set; }
+        public string SystemPassword { get; set; }
         public bool IsClosed { get; set; }
         public decimal SubTotal { get; set; }
         public decimal GrandTotal { get; set; }
