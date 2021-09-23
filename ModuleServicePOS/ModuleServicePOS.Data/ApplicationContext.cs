@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModuleServicePOS.Data.ModelClasses;
+using ModuleServicePOS.Data.ModelClassesMap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace ModuleServicePOS.Data
         #region TABLES
         public DbSet<UserDetails> Users { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<SummaryOfReceived> SummaryOfReceiveds { get; set; }
         public DbSet<EstimateDetails> EstimateDetails { get; set; }
-        public DbSet<SummaryOfReceivedMaster> summaryOfReceivedMasters  { get; set; }
+        public DbSet<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails  { get; set; }
+        public DbSet<SummaryOfReceivedMaster> SummaryOfReceivedMasters  { get; set; }
 
         #endregion
         #region ON MODEL CREATION 
@@ -27,17 +28,17 @@ namespace ModuleServicePOS.Data
         {
             base.OnModelCreating(modelBuilder);
             new UserMap(modelBuilder.Entity<UserDetails>());
-            new OrderDetailMap(modelBuilder.Entity<OrderDetails>());
-            new SummaryOfReceivedMap(modelBuilder.Entity<SummaryOfReceived>());
+            new OrderDetailsMap(modelBuilder.Entity<OrderDetails>());
             new EstimateDetailsMap(modelBuilder.Entity<EstimateDetails>());
             new SummaryOfReceivedMasterMap(modelBuilder.Entity<SummaryOfReceivedMaster>());
+            new SummaryOfReceivedOrderDetailMap(modelBuilder.Entity<SummaryOfReceivedOrderDetail>());
 
             #region COLUMN CONFIGURATION
             //modelBuilder.Entity<UserDetails>().Property(f => f.Id).ValueGeneratedOnAdd();
-
             #endregion
 
-            modelBuilder.Entity<UserDetails>().HasData(new UserDetails
+            modelBuilder.Entity<UserDetails>().HasData(
+                new UserDetails
             {
                 Id = 1,
                 Age = 100,
@@ -49,7 +50,8 @@ namespace ModuleServicePOS.Data
                 Password = "SuperAdmin1",
                 ContactNumber = string.Empty,
                 CreatedDate = DateTime.UtcNow,
-            },new UserDetails
+            },
+                new UserDetails
             {
                 Id = 2,
                 Age = 100,
@@ -61,7 +63,8 @@ namespace ModuleServicePOS.Data
                 Password = "SuperAdmin2",
                 CreatedDate = DateTime.UtcNow,
                 ContactNumber = string.Empty,
-            });
+            }
+            );
         }
         
         #endregion

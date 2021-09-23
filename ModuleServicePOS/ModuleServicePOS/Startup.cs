@@ -33,7 +33,6 @@ namespace ModuleServicePOS
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<ISummaryOfReceivedService, SummaryOfReceivedService>();
             services.AddTransient<IEstimateDetailService, EstimateDetailService>();
             services.AddTransient<ISummaryOfReceivedMasterService, SummaryOfReceivedMasterService>();
 

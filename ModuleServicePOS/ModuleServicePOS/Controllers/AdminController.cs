@@ -18,16 +18,14 @@ namespace ModuleServicePOS.Controllers
     {
         private readonly ILogger<AdminController> _logger;
         private readonly IOrderService _orderService;
-        private readonly ISummaryOfReceivedService _summaryOfReceivedService;
         private readonly IEstimateDetailService _estimateDetailService;
         private readonly ISummaryOfReceivedMasterService _summaryOfReceivedMasterService;
         private IConfiguration _config;
         private ApplicationContext _context;
-        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedService summaryOfReceivedService, ISummaryOfReceivedMasterService summaryOfReceivedMasterService, ApplicationContext context, IConfiguration config)
+        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedMasterService summaryOfReceivedMasterService, ApplicationContext context, IConfiguration config)
         {
             _logger = logger;
             _orderService = orderService;
-            _summaryOfReceivedService= summaryOfReceivedService;
             _estimateDetailService = estimateDetailService;
             _summaryOfReceivedMasterService = summaryOfReceivedMasterService;
             _context = context;
@@ -75,7 +73,7 @@ namespace ModuleServicePOS.Controllers
                     IsClosed = orderDetailItem.IsClosed,
                     Id = orderDetailItem.Id
                 };
-                orderDetails.SummaryOfReceivedList = _summaryOfReceivedService.GetAllByOrderId(id).ToList().Select(x => x.ItemName);
+                //orderDetails.SummaryOfReceivedList = _summaryOfReceivedService.GetAllByOrderId(id).ToList().Select(x => x.ItemName);
                 orderDetails.EstimateDetailsList = _estimateDetailService.GetAllByOrderId(id).Where(x => x.IsDelete != true).ToList().Select(item => _mappingEstimateDetailsToEstimateDetailsFormModel(item));
             }
             else {
@@ -94,14 +92,14 @@ namespace ModuleServicePOS.Controllers
             #region INTERNAL FUNCTION
             void _summaryOfReceivedServiceInsert(IEnumerable<string> summaryOfReceivedList, long orderDetailId)
             {
-                foreach (var item in summaryOfReceivedList)
-                {
-                    _summaryOfReceivedService.Insert(new SummaryOfReceived
-                    {
-                        OrderDetailId = orderDetailId,
-                        ItemName = item,
-                    });
-                }
+                /*foreach (var item in summaryOfReceivedList)
+                {*/
+                    //_summaryOfReceivedService.Insert(new SummaryOfReceived
+                    //{
+                    //    OrderDetailId = orderDetailId,
+                    //    ItemName = item,
+                    //});
+                //}
             }
 
             OrderDetails _mappingOrderDetailsFormModelToOrderDetails(OrderDetailsFormModel orderDetailsFormModel) {
@@ -131,7 +129,7 @@ namespace ModuleServicePOS.Controllers
                 if (orderDetails.Id > 0)
                 { 
                     var record  = _orderService.UpdateOrder(_mappingOrderDetailsFormModelToOrderDetails(orderDetails));
-                    _summaryOfReceivedService.DeleteByOrderId(orderDetails.Id);
+                    //_summaryOfReceivedService.DeleteByOrderId(orderDetails.Id);
                     if (orderDetails.SummaryOfReceivedList.Count() > 0)
                     {
                         _summaryOfReceivedServiceInsert(orderDetails.SummaryOfReceivedList, record.Id);

@@ -12,8 +12,8 @@ namespace ModuleServicePOS.Data.ModelClasses
 
         public OrderDetails()
         {
-            this.SummaryOfReceived = new HashSet<SummaryOfReceived>();
             this.EstimateDetail = new HashSet<EstimateDetails>();
+            this.SummaryOfReceivedOrderDetails = new HashSet<SummaryOfReceivedOrderDetail>();
         }
         [Required]
         [Display(Name ="Client Name: ")]
@@ -62,7 +62,7 @@ namespace ModuleServicePOS.Data.ModelClasses
         public decimal SubTotal { get; set; }
         public decimal GrandTotal { get; set; }
 
-        public virtual ICollection<SummaryOfReceived> SummaryOfReceived { get; set; }
         public virtual ICollection<EstimateDetails> EstimateDetail { get; set; }
+        public virtual ICollection<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails { get; set; }
     }
 }

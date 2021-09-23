@@ -78,7 +78,7 @@
             <div class="col">
                 <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
                 <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="@(new SelectList(Model.SummaryDetailsList,"Id","ItemName"))">
+                        asp-items="@(new SelectList(Model.SummaryDetailsList, "ItemName", "ItemName"))" onchange="getSummaryData(this.value);">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="SummaryOfReceivedList"></span>
@@ -86,11 +86,14 @@
             <div class="col">
                 <label asp-for="ProductStatusList">Product Status</label>
                 <select asp-for="ProductStatusList" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="@(new SelectList(ProductStatusList,"Text","Value"))">
+                        asp-items="@(new SelectList(ProductStatusList, "Text", "Value"))">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="ProductStatusList"></span>
             </div>
+        </div>
+        <div class="row mt-2" id="summaryTable">
+            
         </div>
         <div class="row mt-2">
             <div class="col">
@@ -123,7 +126,7 @@
             <div class="col">
                 <label asp-for="OrderStatus">Order Status: </label>
                 <select asp-for="OrderStatus" class="selectpicker" data-live-search="true" onse
-                        asp-items="@(new SelectList(OrderStatusList,"Text","Value"))">
+                        asp-items="@(new SelectList(OrderStatusList, "Text", "Value"))">
                     <option disabled>Please select Status</option>
                 </select>
                 <span asp-validation-for="ProductStatusList"></span>
@@ -208,7 +211,7 @@
                         </table>
                     </div>
                 </div>
-            }
+                                    }
         }
 
     </div>
@@ -231,6 +234,51 @@
                     }
                 });
             }
+        }
+        function getSummaryData(SummaryItem) {
+            debugger;
+            console.log(SummaryItem);
+
+            let table = document.createElement('table');
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            table.border = '1';
+            document.getElementById('summaryTable').appendChild(table);
+            
+            let row_1 = document.createElement('tr');
+            let heading_1 = document.createElement('th');
+            heading_1.innerHTML = "Item Name";
+            let heading_2 = document.createElement('th');
+            heading_2.innerHTML = "Company Name";
+            let heading_3 = document.createElement('th');
+            heading_3.innerHTML = "Model Number";
+            let heading_4 = document.createElement('th');
+            heading_4.innerHTML = "Serial Number";
+
+            row_1.appendChild(heading_1);
+            row_1.appendChild(heading_2);
+            row_1.appendChild(heading_3);
+            row_1.appendChild(heading_4);
+            thead.appendChild(row_1);
+
+            let row_2 = document.createElement('tr');
+            let row_2_data_1 = document.createElement('td');
+            row_2_data_1.innerHTML = SummaryItem;
+            let row_2_data_2 = document.createElement('td');
+            row_2_data_2.innerHTML = "<input type='text' />";
+            let row_2_data_3 = document.createElement('td');
+            row_2_data_3.innerHTML = "<input type='text' />";
+            let row_2_data_4 = document.createElement('td');
+            row_2_data_4.innerHTML = "<input type='text' />";
+
+            row_2.appendChild(row_2_data_1);
+            row_2.appendChild(row_2_data_2);
+            row_2.appendChild(row_2_data_3);
+            row_2.appendChild(row_2_data_4);
+            tbody.appendChild(row_2);
         }
     </script>
 

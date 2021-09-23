@@ -10,11 +10,15 @@ namespace ModuleServicePOS.Data.ModelClasses
 {
     public class SummaryOfReceivedMaster : BaseEntity
     {
+        public SummaryOfReceivedMaster()
+        {
+            this.SummaryOfReceivedOrderDetails = new HashSet<SummaryOfReceivedOrderDetail>();
+        }
         [Required]
         public string ItemName { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
-
         public bool IsDelete { get; set; }
+        public virtual ICollection<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails { get; set; }
     }
 }
