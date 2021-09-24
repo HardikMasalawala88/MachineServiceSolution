@@ -9,11 +9,11 @@ namespace ModuleServicePOS.Service
 {
     public interface IEstimateDetailService
     {
-        IEnumerable<EstimateDetails> GetAll();
-        IEnumerable<EstimateDetails> GetAllByOrderId(long orderId);
-        EstimateDetails Get(long id);
-        EstimateDetails Insert(EstimateDetails estimateDetails);
-        EstimateDetails Update(EstimateDetails estimateDetails);
+        IEnumerable<EstimateDetail> GetAll();
+        IEnumerable<EstimateDetail> GetAllByOrderId(long orderId);
+        EstimateDetail Get(long id);
+        EstimateDetail Insert(EstimateDetail estimateDetails);
+        EstimateDetail Update(EstimateDetail estimateDetails);
         void DeleteById(long id);
         void DeleteByOrderId(long id);
     }

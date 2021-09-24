@@ -9,7 +9,7 @@ namespace ModuleServicePOS.Data
 {
     public class UserMap
     {
-        public UserMap(EntityTypeBuilder<UserDetails> entityBuilder)
+        public UserMap(EntityTypeBuilder<UserDetail> entityBuilder)
         {
             entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.Name).IsRequired();

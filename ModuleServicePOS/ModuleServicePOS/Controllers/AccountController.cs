@@ -27,12 +27,12 @@ namespace ModuleServicePOS.Controllers
         }
         public IActionResult Registration()
         {
-            UserDetails user = new UserDetails();
+            UserDetail user = new UserDetail();
             return View(user);
         }
 
         [HttpPost]
-        public IActionResult Registration(UserDetails userDetails)
+        public IActionResult Registration(UserDetail userDetails)
         {
             if (ModelState.IsValid)
             {
@@ -46,12 +46,12 @@ namespace ModuleServicePOS.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            UserDetails users = new UserDetails();
+            UserDetail users = new UserDetail();
             return View(users);
         }
 
         [HttpPost]
-        public IActionResult Login(UserDetails users)
+        public IActionResult Login(UserDetail users)
         {
             if (users.UserName == null && users.Password != null)
             {

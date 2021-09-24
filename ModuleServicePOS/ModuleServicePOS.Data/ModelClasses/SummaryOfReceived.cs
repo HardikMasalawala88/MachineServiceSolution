@@ -14,6 +14,6 @@ namespace ModuleServicePOS.Data.ModelClasses
         [Display(Name = "Summary Of Received: ")]
         public string ItemName { get; set; }
         public long OrderDetailId { get; set; }
-        public virtual OrderDetails OrderDetails { get; set; }
+        public virtual OrderDetail OrderDetails { get; set; }
     }
 }

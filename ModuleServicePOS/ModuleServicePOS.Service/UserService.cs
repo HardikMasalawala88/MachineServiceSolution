@@ -10,35 +10,35 @@ namespace ModuleServicePOS.Service
 {
     public class UserService : IUserService
     {
-        private IRepository<UserDetails> _userRepository;
+        private IRepository<UserDetail> _userRepository;
 
-        public UserService(IRepository<UserDetails> userRepository)
+        public UserService(IRepository<UserDetail> userRepository)
         {
             _userRepository = userRepository;
         }
         public void DeleteUser(long id)
         {
-            UserDetails user = GetUser(id);
+            UserDetail user = GetUser(id);
             _userRepository.Remove(user);
             _userRepository.SaveChanges();
         }
 
-        public UserDetails GetUser(long id)
+        public UserDetail GetUser(long id)
         {
             return _userRepository.Get(id);
         }
 
-        public IEnumerable<UserDetails> GetUsers()
+        public IEnumerable<UserDetail> GetUsers()
         {
             return _userRepository.GetAll();
         }
 
-        public void InsertUser(UserDetails user)
+        public void InsertUser(UserDetail user)
         {
             _userRepository.Insert(user);
         }
 
-        public void UpdateUser(UserDetails user)
+        public void UpdateUser(UserDetail user)
         {
             _userRepository.Update(user);
         }

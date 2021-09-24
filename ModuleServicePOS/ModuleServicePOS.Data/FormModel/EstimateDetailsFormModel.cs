@@ -19,6 +19,6 @@ namespace ModuleServicePOS.Data.FormModel
         public DateTime? ItemAddDate { get; set; }
         public bool? IsDelete { get; set; }
         public long OrderDetailId { get; set; }
-        public virtual OrderDetails OrderDetail { get; set; }
+        public virtual OrderDetail OrderDetail { get; set; }
     }
 }

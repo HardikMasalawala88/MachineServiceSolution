@@ -9,10 +9,10 @@ namespace ModuleServicePOS.Service
 {
     public interface IOrderService
     {
-        IEnumerable<OrderDetails> GetOrders();
-        OrderDetails GetOrder(long id);
-        OrderDetails InsertOrder(OrderDetails orderDetails);
-        OrderDetails UpdateOrder(OrderDetails orderDetails);
+        IEnumerable<OrderDetail> GetOrders();
+        OrderDetail GetOrder(long id);
+        OrderDetail InsertOrder(OrderDetail orderDetails);
+        OrderDetail UpdateOrder(OrderDetail orderDetails);
         void DeleteOrder(long id);
     }
 }

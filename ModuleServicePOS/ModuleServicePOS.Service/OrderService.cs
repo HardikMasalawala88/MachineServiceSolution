@@ -10,37 +10,37 @@ namespace ModuleServicePOS.Service
 {
     public class OrderService : IOrderService
     {
-        private IRepository<OrderDetails> _orderRepository;
+        private IRepository<OrderDetail> _orderRepository;
 
-        public OrderService(IRepository<OrderDetails> orderRepository)
+        public OrderService(IRepository<OrderDetail> orderRepository)
         {
             _orderRepository = orderRepository;
         }
         public void DeleteOrder(long id)
         {
-            OrderDetails orderDetails = GetOrder(id);
+            OrderDetail orderDetails = GetOrder(id);
             _orderRepository.Remove(orderDetails);
             _orderRepository.SaveChanges();
         }
 
-        public OrderDetails GetOrder(long id)
+        public OrderDetail GetOrder(long id)
         {
             return _orderRepository.Get(id);
         }
 
-        public IEnumerable<OrderDetails> GetOrders()
+        public IEnumerable<OrderDetail> GetOrders()
         {
             return _orderRepository.GetAll();
         }
 
-        public OrderDetails InsertOrder(OrderDetails orderDetails)
+        public OrderDetail InsertOrder(OrderDetail orderDetails)
         {
             orderDetails.CreatedDate = DateTime.UtcNow;
             _orderRepository.Insert(orderDetails);
             return orderDetails;
         }
 
-        public OrderDetails UpdateOrder(OrderDetails orderDetails)
+        public OrderDetail UpdateOrder(OrderDetail orderDetails)
         {
             orderDetails.ModifiedDate = DateTime.UtcNow;
             _orderRepository.Update(orderDetails);

@@ -10,7 +10,7 @@ namespace ModuleServicePOS.Data.ModelClasses
 {
     public class EstimateDetailsMap
     {
-        public EstimateDetailsMap(EntityTypeBuilder<EstimateDetails> entityBuilder)
+        public EstimateDetailsMap(EntityTypeBuilder<EstimateDetail> entityBuilder)
         {
             entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.Description).IsRequired();

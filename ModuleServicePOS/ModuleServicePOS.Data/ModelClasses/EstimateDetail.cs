@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModuleServicePOS.Data.ModelClasses
 {
-    public class EstimateDetails : BaseEntity
+    public class EstimateDetail : BaseEntity
     {
         [Display(Name = "Description: ")]
         public string Description { get; set; }
@@ -18,6 +18,6 @@ namespace ModuleServicePOS.Data.ModelClasses
         [Display(Name = "Amount: ")]
         public decimal Amount { get; set; }
         public long OrderDetailId { get; set; }
-        public virtual OrderDetails OrderDetail { get; set; }
+        public virtual OrderDetail OrderDetail { get; set; }
     }
 }

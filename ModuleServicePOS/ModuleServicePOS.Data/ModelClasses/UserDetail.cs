@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModuleServicePOS.Data
 {
-    public class UserDetails : BaseEntity
+    public class UserDetail : BaseEntity
     {
         [Required]
         [Display(Name = "Enter Name: ")]

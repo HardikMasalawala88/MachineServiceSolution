@@ -10,7 +10,7 @@ namespace ModuleServicePOS.Data.ModelClasses
 {
     public class OrderDetailsMap
     {
-        public OrderDetailsMap(EntityTypeBuilder<OrderDetails> entityBuilder)
+        public OrderDetailsMap(EntityTypeBuilder<OrderDetail> entityBuilder)
         {
             entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.ClientName).IsRequired();

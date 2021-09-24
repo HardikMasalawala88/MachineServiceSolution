@@ -7,6 +7,7 @@ using ModuleServicePOS.Data.FormModel;
 using ModuleServicePOS.Data.ModelClasses;
 using ModuleServicePOS.Repository.Constant;
 using ModuleServicePOS.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,16 @@ namespace ModuleServicePOS.Controllers
         private readonly IOrderService _orderService;
         private readonly IEstimateDetailService _estimateDetailService;
         private readonly ISummaryOfReceivedMasterService _summaryOfReceivedMasterService;
+        private readonly ISummaryOfReceivedOrderDetailService _summaryOfReceivedOrderDetailService;
         private IConfiguration _config;
         private ApplicationContext _context;
-        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedMasterService summaryOfReceivedMasterService, ApplicationContext context, IConfiguration config)
+        public AdminController(ILogger<AdminController> logger, IOrderService orderService, IEstimateDetailService estimateDetailService, ISummaryOfReceivedMasterService summaryOfReceivedMasterService, ISummaryOfReceivedOrderDetailService summaryOfReceivedOrderDetailService, ApplicationContext context, IConfiguration config)
         {
             _logger = logger;
             _orderService = orderService;
             _estimateDetailService = estimateDetailService;
             _summaryOfReceivedMasterService = summaryOfReceivedMasterService;
+            _summaryOfReceivedOrderDetailService = summaryOfReceivedOrderDetailService;
             _context = context;
             _config = config;
         }
@@ -40,7 +43,7 @@ namespace ModuleServicePOS.Controllers
         public IActionResult Repair(long id)
         {
             #region PRIVATE FUNCTION 
-            EstimateDetailsFormModel _mappingEstimateDetailsToEstimateDetailsFormModel(EstimateDetails estimateDetails)
+            EstimateDetailsFormModel _mappingEstimateDetailsToEstimateDetailsFormModel(EstimateDetail estimateDetails)
             {
                 return new EstimateDetailsFormModel
                 {
@@ -51,9 +54,12 @@ namespace ModuleServicePOS.Controllers
                     Description = estimateDetails.Description,
                     OrderDetailId = estimateDetails.OrderDetailId
                 };
-            } 
+            }
+
             #endregion
             OrderDetailsFormModel orderDetails = new OrderDetailsFormModel();
+            var SummaryData = _summaryOfReceivedMasterService.GetAll();
+            orderDetails.SummaryDetailsList = SummaryData;
             if (id > 0)
             {
                 var orderDetailItem = _orderService.GetOrder(id);
@@ -75,12 +81,17 @@ namespace ModuleServicePOS.Controllers
                 };
                 //orderDetails.SummaryOfReceivedList = _summaryOfReceivedService.GetAllByOrderId(id).ToList().Select(x => x.ItemName);
                 orderDetails.EstimateDetailsList = _estimateDetailService.GetAllByOrderId(id).Where(x => x.IsDelete != true).ToList().Select(item => _mappingEstimateDetailsToEstimateDetailsFormModel(item));
+                orderDetails.SummaryOfReceivedOrderDetails = _summaryOfReceivedOrderDetailService.GetAllByOrderId(id).ToList();
+                orderDetails.SummaryOfReceivedOrderDetailsJSON = JsonConvert.SerializeObject(orderDetails.SummaryOfReceivedOrderDetails, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        }); 
+                //JsonConvert.SerializeObject(orderDetails.SummaryOfReceivedOrderDetails);
             }
             else {
                 orderDetails.PreparedBy = HttpContext.Session.GetString(Constants.UName);
                 orderDetails.SerialNo = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
-                var SummaryData = _summaryOfReceivedMasterService.GetAll();
-                orderDetails.SummaryDetailsList = SummaryData;
             }
             return View(orderDetails);
         }
@@ -90,20 +101,24 @@ namespace ModuleServicePOS.Controllers
         {
 
             #region INTERNAL FUNCTION
-            void _summaryOfReceivedServiceInsert(IEnumerable<string> summaryOfReceivedList, long orderDetailId)
+            void _summaryOfReceivedOrderInsert(IEnumerable<SummaryOfReceivedOrderDetail> summaryOfReceivedList, long orderDetailId)
             {
-                /*foreach (var item in summaryOfReceivedList)
-                {*/
-                    //_summaryOfReceivedService.Insert(new SummaryOfReceived
-                    //{
-                    //    OrderDetailId = orderDetailId,
-                    //    ItemName = item,
-                    //});
-                //}
+                foreach (var item in summaryOfReceivedList)
+                {
+                    _summaryOfReceivedOrderDetailService.Insert(new SummaryOfReceivedOrderDetail
+                    {
+                        OrderDetailId = orderDetailId,
+                        SummaryOfReceivedMasterId = item.SummaryOfReceivedMasterId,
+                        CompanyName = item.CompanyName,
+                        ModelNumber = item.ModelNumber,
+                        SerialNumber = item.SerialNumber,
+                        CreatedDate = DateTime.Now,
+                    });
+                }
             }
 
-            OrderDetails _mappingOrderDetailsFormModelToOrderDetails(OrderDetailsFormModel orderDetailsFormModel) {
-                return new OrderDetails
+            OrderDetail _mappingOrderDetailsFormModelToOrderDetails(OrderDetailsFormModel orderDetailsFormModel) {
+                return new OrderDetail
                 {
                     Id = orderDetailsFormModel.Id,
                     Model = orderDetailsFormModel.Model,
@@ -126,20 +141,28 @@ namespace ModuleServicePOS.Controllers
             #endregion
             if (ModelState.IsValid)
             {
+                List<SummaryOfReceivedOrderDetail> data = new List<SummaryOfReceivedOrderDetail>();
+                data = JsonConvert.DeserializeObject<List<SummaryOfReceivedOrderDetail>>(orderDetails.SummaryOfReceivedOrderDetailsJSON);
+                
                 if (orderDetails.Id > 0)
-                { 
+                {
+
+                    data.ForEach(x => {
+                        x.OrderDetailId = orderDetails.Id;
+                    });
                     var record  = _orderService.UpdateOrder(_mappingOrderDetailsFormModelToOrderDetails(orderDetails));
                     //_summaryOfReceivedService.DeleteByOrderId(orderDetails.Id);
                     if (orderDetails.SummaryOfReceivedList.Count() > 0)
                     {
-                        _summaryOfReceivedServiceInsert(orderDetails.SummaryOfReceivedList, record.Id);
+                        _summaryOfReceivedOrderInsert(data, record.Id);
                     }
                 }
                 else {
                     var record = _orderService.InsertOrder(_mappingOrderDetailsFormModelToOrderDetails(orderDetails));
+                   // data.ForEach(x => { x.OrderDetailId = record.Id; });
                     if (orderDetails.SummaryOfReceivedList.Count() > 0)
                     {
-                        _summaryOfReceivedServiceInsert(orderDetails.SummaryOfReceivedList, record.Id);
+                        _summaryOfReceivedOrderInsert(data, record.Id);
                     }
                 }
                 return RedirectToAction("Index");
@@ -151,7 +174,7 @@ namespace ModuleServicePOS.Controllers
         [HttpPost]
         public IActionResult AddEstimate(OrderDetailsFormModel orderDetailsFormModel)
         {
-            EstimateDetails estimateDetails = new EstimateDetails();
+            EstimateDetail estimateDetails = new EstimateDetail();
 
             estimateDetails.Description = orderDetailsFormModel.EstimateDetails.Description;
             estimateDetails.Amount = orderDetailsFormModel.EstimateDetails.Amount;

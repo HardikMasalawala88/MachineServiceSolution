@@ -10,7 +10,7 @@ using ModuleServicePOS.Data;
 namespace ModuleServicePOS.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210911095034_1_ModuleService")]
+    [Migration("20210924125803_1_ModuleService")]
     partial class _1_ModuleService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace ModuleServicePOS.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,7 +29,7 @@ namespace ModuleServicePOS.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -61,7 +61,7 @@ namespace ModuleServicePOS.Data.Migrations
                     b.ToTable("EstimateDetails");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.OrderDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.OrderDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,7 +84,7 @@ namespace ModuleServicePOS.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("GrandTotal")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<bool>("IsClosed")
                         .HasColumnType("bit");
@@ -100,6 +100,10 @@ namespace ModuleServicePOS.Data.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PreparedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,7 +117,15 @@ namespace ModuleServicePOS.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("SystemPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SystemType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TechnicianNote")
                         .IsRequired()
@@ -124,17 +136,52 @@ namespace ModuleServicePOS.Data.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceived", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedMaster", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SummaryOfReceivedMasters");
+                });
+
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedOrderDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModelNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -144,17 +191,23 @@ namespace ModuleServicePOS.Data.Migrations
                     b.Property<long>("OrderDetailId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("OrderDetailsId")
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("SummaryOfReceivedMasterId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderDetailsId");
+                    b.HasIndex("OrderDetailId");
 
-                    b.ToTable("SummaryOfReceiveds");
+                    b.HasIndex("SummaryOfReceivedMasterId");
+
+                    b.ToTable("SummaryOfReceivedOrderDetails");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.UserDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.UserDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,7 +262,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 11, 9, 50, 33, 626, DateTimeKind.Utc).AddTicks(5498),
+                            CreatedDate = new DateTime(2021, 9, 24, 12, 58, 2, 671, DateTimeKind.Utc).AddTicks(4199),
                             Gender = "",
                             MailId = "SuperAdmin1@POS.com",
                             Name = "SuperAdmin1",
@@ -222,7 +275,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 11, 9, 50, 33, 626, DateTimeKind.Utc).AddTicks(6212),
+                            CreatedDate = new DateTime(2021, 9, 24, 12, 58, 2, 671, DateTimeKind.Utc).AddTicks(4907),
                             Gender = "",
                             MailId = "SuperAdmin2@POS.com",
                             Name = "SuperAdmin2",
@@ -231,9 +284,9 @@ namespace ModuleServicePOS.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetail", b =>
                 {
-                    b.HasOne("ModuleServicePOS.Data.ModelClasses.OrderDetails", "OrderDetail")
+                    b.HasOne("ModuleServicePOS.Data.ModelClasses.OrderDetail", "OrderDetail")
                         .WithMany("EstimateDetail")
                         .HasForeignKey("OrderDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -242,20 +295,35 @@ namespace ModuleServicePOS.Data.Migrations
                     b.Navigation("OrderDetail");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceived", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedOrderDetail", b =>
                 {
-                    b.HasOne("ModuleServicePOS.Data.ModelClasses.OrderDetails", "OrderDetails")
-                        .WithMany("SummaryOfReceived")
-                        .HasForeignKey("OrderDetailsId");
+                    b.HasOne("ModuleServicePOS.Data.ModelClasses.OrderDetail", "OrderDetails")
+                        .WithMany("SummaryOfReceivedOrderDetails")
+                        .HasForeignKey("OrderDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedMaster", "SummaryOfReceivedMasters")
+                        .WithMany("SummaryOfReceivedOrderDetails")
+                        .HasForeignKey("SummaryOfReceivedMasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("SummaryOfReceivedMasters");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.OrderDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.OrderDetail", b =>
                 {
                     b.Navigation("EstimateDetail");
 
-                    b.Navigation("SummaryOfReceived");
+                    b.Navigation("SummaryOfReceivedOrderDetails");
+                });
+
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedMaster", b =>
+                {
+                    b.Navigation("SummaryOfReceivedOrderDetails");
                 });
 #pragma warning restore 612, 618
         }

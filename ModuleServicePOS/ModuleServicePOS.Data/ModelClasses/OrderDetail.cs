@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ModuleServicePOS.Data.ModelClasses
 {
-    public class OrderDetails : BaseEntity
+    public class OrderDetail : BaseEntity
     {
 
-        public OrderDetails()
+        public OrderDetail()
         {
-            this.EstimateDetail = new HashSet<EstimateDetails>();
+            this.EstimateDetail = new HashSet<EstimateDetail>();
             this.SummaryOfReceivedOrderDetails = new HashSet<SummaryOfReceivedOrderDetail>();
         }
         [Required]
@@ -62,7 +62,7 @@ namespace ModuleServicePOS.Data.ModelClasses
         public decimal SubTotal { get; set; }
         public decimal GrandTotal { get; set; }
 
-        public virtual ICollection<EstimateDetails> EstimateDetail { get; set; }
+        public virtual ICollection<EstimateDetail> EstimateDetail { get; set; }
         public virtual ICollection<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails { get; set; }
     }
 }

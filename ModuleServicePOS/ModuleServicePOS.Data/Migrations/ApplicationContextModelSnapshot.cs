@@ -19,7 +19,7 @@ namespace ModuleServicePOS.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -205,7 +205,7 @@ namespace ModuleServicePOS.Data.Migrations
                     b.ToTable("SummaryOfReceivedOrderDetails");
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.UserDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.UserDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,7 +260,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 23, 13, 35, 44, 749, DateTimeKind.Utc).AddTicks(2092),
+                            CreatedDate = new DateTime(2021, 9, 24, 12, 58, 2, 671, DateTimeKind.Utc).AddTicks(4199),
                             Gender = "",
                             MailId = "SuperAdmin1@POS.com",
                             Name = "SuperAdmin1",
@@ -273,7 +273,7 @@ namespace ModuleServicePOS.Data.Migrations
                             Age = 100,
                             City = "",
                             ContactNumber = "",
-                            CreatedDate = new DateTime(2021, 9, 23, 13, 35, 44, 749, DateTimeKind.Utc).AddTicks(2823),
+                            CreatedDate = new DateTime(2021, 9, 24, 12, 58, 2, 671, DateTimeKind.Utc).AddTicks(4907),
                             Gender = "",
                             MailId = "SuperAdmin2@POS.com",
                             Name = "SuperAdmin2",
@@ -282,7 +282,7 @@ namespace ModuleServicePOS.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetails", b =>
+            modelBuilder.Entity("ModuleServicePOS.Data.ModelClasses.EstimateDetail", b =>
                 {
                     b.HasOne("ModuleServicePOS.Data.ModelClasses.OrderDetail", "OrderDetail")
                         .WithMany("EstimateDetail")

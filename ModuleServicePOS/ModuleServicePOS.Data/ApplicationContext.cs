@@ -16,9 +16,9 @@ namespace ModuleServicePOS.Data
         }
 
         #region TABLES
-        public DbSet<UserDetails> Users { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<EstimateDetails> EstimateDetails { get; set; }
+        public DbSet<UserDetail> Users { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<EstimateDetail> EstimateDetails { get; set; }
         public DbSet<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails  { get; set; }
         public DbSet<SummaryOfReceivedMaster> SummaryOfReceivedMasters  { get; set; }
 
@@ -27,9 +27,9 @@ namespace ModuleServicePOS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            new UserMap(modelBuilder.Entity<UserDetails>());
-            new OrderDetailsMap(modelBuilder.Entity<OrderDetails>());
-            new EstimateDetailsMap(modelBuilder.Entity<EstimateDetails>());
+            new UserMap(modelBuilder.Entity<UserDetail>());
+            new OrderDetailsMap(modelBuilder.Entity<OrderDetail>());
+            new EstimateDetailsMap(modelBuilder.Entity<EstimateDetail>());
             new SummaryOfReceivedMasterMap(modelBuilder.Entity<SummaryOfReceivedMaster>());
             new SummaryOfReceivedOrderDetailMap(modelBuilder.Entity<SummaryOfReceivedOrderDetail>());
 
@@ -37,8 +37,8 @@ namespace ModuleServicePOS.Data
             //modelBuilder.Entity<UserDetails>().Property(f => f.Id).ValueGeneratedOnAdd();
             #endregion
 
-            modelBuilder.Entity<UserDetails>().HasData(
-                new UserDetails
+            modelBuilder.Entity<UserDetail>().HasData(
+                new UserDetail
             {
                 Id = 1,
                 Age = 100,
@@ -51,7 +51,7 @@ namespace ModuleServicePOS.Data
                 ContactNumber = string.Empty,
                 CreatedDate = DateTime.UtcNow,
             },
-                new UserDetails
+                new UserDetail
             {
                 Id = 2,
                 Age = 100,

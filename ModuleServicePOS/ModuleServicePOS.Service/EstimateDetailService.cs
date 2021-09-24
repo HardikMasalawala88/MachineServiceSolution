@@ -10,15 +10,15 @@ namespace ModuleServicePOS.Service
 {
     public class EstimateDetailService : IEstimateDetailService
     {
-        private readonly IRepository<EstimateDetails>  _estimateDetailsRepository;
+        private readonly IRepository<EstimateDetail>  _estimateDetailsRepository;
 
-        public EstimateDetailService(IRepository<EstimateDetails> estimateDetailsRepository)
+        public EstimateDetailService(IRepository<EstimateDetail> estimateDetailsRepository)
         {
             _estimateDetailsRepository = estimateDetailsRepository;
         }
         public void DeleteById(long id)
         {
-            EstimateDetails estimateDetails = Get(id);
+            EstimateDetail estimateDetails = Get(id);
             _estimateDetailsRepository.Remove(estimateDetails);
             _estimateDetailsRepository.SaveChanges();
         }
@@ -32,29 +32,29 @@ namespace ModuleServicePOS.Service
             }
         }
 
-        public EstimateDetails Get(long id)
+        public EstimateDetail Get(long id)
         {
             return _estimateDetailsRepository.Get(id);
         }
 
-        public IEnumerable<EstimateDetails> GetAll()
+        public IEnumerable<EstimateDetail> GetAll()
         {
             return _estimateDetailsRepository.GetAll();
         }
 
-        public IEnumerable<EstimateDetails> GetAllByOrderId(long orderId)
+        public IEnumerable<EstimateDetail> GetAllByOrderId(long orderId)
         {
             return _estimateDetailsRepository.GetAll().Where(x => x.OrderDetailId == orderId);
         }
 
-        public EstimateDetails Insert(EstimateDetails estimateDetails)
+        public EstimateDetail Insert(EstimateDetail estimateDetails)
         {
             estimateDetails.CreatedDate = DateTime.UtcNow;
             _estimateDetailsRepository.Insert(estimateDetails);
             return estimateDetails;
         }
 
-        public EstimateDetails Update(EstimateDetails estimateDetails)
+        public EstimateDetail Update(EstimateDetail estimateDetails)
         {
             _estimateDetailsRepository.Update(estimateDetails);
             return estimateDetails;

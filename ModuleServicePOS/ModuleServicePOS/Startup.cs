@@ -35,6 +35,7 @@ namespace ModuleServicePOS
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IEstimateDetailService, EstimateDetailService>();
             services.AddTransient<ISummaryOfReceivedMasterService, SummaryOfReceivedMasterService>();
+            services.AddTransient<ISummaryOfReceivedOrderDetailService, SummaryOfReceivedOrderDetailService>();
 
             services.AddSession(options =>
             {

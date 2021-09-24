@@ -9,10 +9,10 @@ namespace ModuleServicePOS.Service
 {
     public interface IUserService
     {
-        IEnumerable<UserDetails> GetUsers();
-        UserDetails GetUser(long id);
-        void InsertUser(UserDetails user);
-        void UpdateUser(UserDetails user);
+        IEnumerable<UserDetail> GetUsers();
+        UserDetail GetUser(long id);
+        void InsertUser(UserDetail user);
+        void UpdateUser(UserDetail user);
         void DeleteUser(long id);
     }
 }

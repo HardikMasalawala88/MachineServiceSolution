@@ -45,10 +45,10 @@ namespace ModuleServicePOS.Data
         [Required]
         [Display(Name = "Technician Notes")]
         public string TechnicianNote { get; set; }
-        [Required]
+    
         [Display(Name = "SubTotal")]
         public decimal SubTotal { get; set; }
-        [Required]
+      
         [Display(Name = "Grand Total")]
         public decimal GrandTotal { get; set; }
         public bool IsClosed { get; set; }
@@ -60,13 +60,14 @@ namespace ModuleServicePOS.Data
         [Required]
         [Display(Name = "System Type")]
         public SystemType SystemType { get; set; }
+        public string SummaryOfReceivedOrderDetailsJSON { get; set; }
         [Required]
         public virtual IEnumerable<string> ProductStatusList { get; set; }
         public virtual IEnumerable<string> SummaryOfReceivedList { get; set; }
         public virtual EstimateDetailsFormModel EstimateDetails { get; set; }
         public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
         public virtual IEnumerable<SummaryOfReceivedMaster> SummaryDetailsList { get; set; }
-        public virtual SummaryOfReceivedOrderDetail SummaryOfReceivedOrderDetails { get; set; }
+        public virtual IEnumerable<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails { get; set; }
 
         
     }
