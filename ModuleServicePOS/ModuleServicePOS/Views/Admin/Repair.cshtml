@@ -78,7 +78,7 @@
             <div class="col">
                 <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
                 <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="@(new SelectList(Model.SummaryDetailsList, "ItemName", "ItemName"))" onchange="getSummaryData(this.value);">
+                        asp-items="@(new SelectList(Model.SummaryDetailsList, "Id", "ItemName"))" onchange="getSummaryData(this);">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="SummaryOfReceivedList"></span>
@@ -92,9 +92,24 @@
                 <span asp-validation-for="ProductStatusList"></span>
             </div>
         </div>
-        <div class="row mt-2" id="summaryTable">
-            
-        </div>
+        @*<div class="row mt-2" id="summaryTable">
+
+        </div>*@
+        <hr />
+        <table id="ts234" class="table table-hover table-fixed makeDatatable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Item Name</th>
+                    <th>Company Name</th>
+                    <th>Model Number</th>
+                    <th>Serial Number</th>
+                    <th>AMOUNT</th>
+                    <th>ACTION</th>
+                     
+                </tr>
+            </thead>
+        </table>
         <div class="row mt-2">
             <div class="col">
                 <label asp-for="Model"></label>
@@ -157,7 +172,8 @@
                 <span asp-validation-for="SystemPassword"></span>
             </div>
         </div>
-       
+        <hr />
+
         @{ if (Model.Id > 0)
             {
                 <hr />
@@ -211,7 +227,7 @@
                         </table>
                     </div>
                 </div>
-                                    }
+            }
         }
 
     </div>
@@ -235,51 +251,199 @@
                 });
             }
         }
-        function getSummaryData(SummaryItem) {
-            debugger;
-            console.log(SummaryItem);
+        /*
+         * SUMMERY OF RECIEVED TABLE 
+         * 
+         */
+        //[
+        //    { id: "1", siteName: "Site1", deviceName: "S1device1", count: "1" },
+        //    { id: "2", siteName: "Site1", deviceName: "S1device2", count: "2" },
+        //    { id: "3", siteName: "Site2", deviceName: "S2device1", count: "1" },
+        //    { id: "4", siteName: "Site2", deviceName: "S2device2", count: "2" },
+        //    { id: "5", siteName: "Site3", deviceName: "S3device1", count: "1" },
+        //    { id: "6", siteName: "Site3", deviceName: "S3device2", count: "2" }]
+        var isinitSORTable = false;
+        var JSON_initSORTable = [];
+        var tableinitSORTable;
+        updateJSON_initSORTable();
+        //let table = document.createElement('table');
+        //let thead = document.createElement('thead');
+        //let tbody = document.createElement('tbody');
+        //function initSORTable() {
+        //    if (isinitSORTable) {
+        //        return false;
+        //    }
+        //    isinitSORTable = true;
+        //    table.setAttribute('class', 'table table-hover table-fixed makeDatatable');
+        //    table.setAttribute('id', 'tbl_initSORTable');
+        //    table.appendChild(thead);
+        //    table.appendChild(tbody);
+        //    table.border = '1';
+        //    document.getElementById('summaryTable').appendChild(table);
 
-            let table = document.createElement('table');
-            let thead = document.createElement('thead');
-            let tbody = document.createElement('tbody');
+        //    let row_1 = document.createElement('tr');
+        //    let heading_1 = document.createElement('th');
+        //    heading_1.innerHTML = "Item Name";
+        //    heading_1.setAttribute("class","text-center");
+        //    let heading_2 = document.createElement('th');
+        //    heading_2.innerHTML = "Company Name";
+        //    heading_2.setAttribute("class", "text-center");
+        //    let heading_3 = document.createElement('th');
+        //    heading_3.innerHTML = "Model Number";
+        //    heading_3.setAttribute("class", "text-center");
+        //    let heading_4 = document.createElement('th');
+        //    heading_4.innerHTML = "Serial Number";
+        //    heading_4.setAttribute("class", "text-center");
 
-            table.appendChild(thead);
-            table.appendChild(tbody);
-            table.border = '1';
-            document.getElementById('summaryTable').appendChild(table);
+        //    row_1.appendChild(heading_1);
+        //    row_1.appendChild(heading_2);
+        //    row_1.appendChild(heading_3);
+        //    row_1.appendChild(heading_4);
+        //    thead.appendChild(row_1);
+        //}
+        //function AddSummaryData(OrderDetailId, SummaryOfReceivedMasterId, CompanyName, ModelNumber, SerialNumber) {
             
-            let row_1 = document.createElement('tr');
-            let heading_1 = document.createElement('th');
-            heading_1.innerHTML = "Item Name";
-            let heading_2 = document.createElement('th');
-            heading_2.innerHTML = "Company Name";
-            let heading_3 = document.createElement('th');
-            heading_3.innerHTML = "Model Number";
-            let heading_4 = document.createElement('th');
-            heading_4.innerHTML = "Serial Number";
+        //    JSON_initSORTable.push({
+        //        Id: JSON_initSORTable.length+1,
+        //        OrderDetailId: OrderDetailId,
+        //        SummaryOfReceivedMasterId: SummaryOfReceivedMasterId,
+        //        CompanyName: CompanyName,
+        //        ModelNumber: ModelNumber,
+        //        SerialNumber: SerialNumber
+        //    });
+        //}
+        //function getSummaryData(element) {
+        //    debugger;
+        //    console.log(element);
+        //    initSORTable();
 
-            row_1.appendChild(heading_1);
-            row_1.appendChild(heading_2);
-            row_1.appendChild(heading_3);
-            row_1.appendChild(heading_4);
-            thead.appendChild(row_1);
+        //    let row_2 = document.createElement('tr');
+        //    let row_2_data_1 = document.createElement('td');
+        //    row_2_data_1.innerHTML = "<input type='hidden' id='unid' value='" + (element.selectedIndex) + "'/> <label ></label>";
+        //    let row_2_data_2 = document.createElement('td');
+        //    row_2_data_2.innerHTML = "<input type='text' class='form-control' />";
+        //    let row_2_data_3 = document.createElement('td');
+        //    row_2_data_3.innerHTML = "<input type='text' class='form-control' />";
+        //    let row_2_data_4 = document.createElement('td');
+        //    row_2_data_4.innerHTML = "<input type='text' class='form-control' />";
 
-            let row_2 = document.createElement('tr');
-            let row_2_data_1 = document.createElement('td');
-            row_2_data_1.innerHTML = SummaryItem;
-            let row_2_data_2 = document.createElement('td');
-            row_2_data_2.innerHTML = "<input type='text' />";
-            let row_2_data_3 = document.createElement('td');
-            row_2_data_3.innerHTML = "<input type='text' />";
-            let row_2_data_4 = document.createElement('td');
-            row_2_data_4.innerHTML = "<input type='text' />";
-
-            row_2.appendChild(row_2_data_1);
-            row_2.appendChild(row_2_data_2);
-            row_2.appendChild(row_2_data_3);
-            row_2.appendChild(row_2_data_4);
-            tbody.appendChild(row_2);
+        //    row_2.appendChild(row_2_data_1);
+        //    row_2.appendChild(row_2_data_2);
+        //    row_2.appendChild(row_2_data_3);
+        //    row_2.appendChild(row_2_data_4);
+        //    tbody.appendChild(row_2);
+        //}
+        function isNumeric(str) {
+            if (typeof str != "string") return false // we only process strings!  
+            return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
         }
+        function getSummaryData(element) {
+            var listAllSummaryOfReceived = []
+            $("#SummaryOfReceivedList option").each(function () {
+                console.log($(this).text(), $(this).val());
+                if (isNumeric($(this).val())) {
+                    listAllSummaryOfReceived.push({
+                        summaryOfReceivedMasterId: $(this).val(),
+                        labelText: $(this).text()
+                    })
+                }
+            });
+            $("#SummaryOfReceivedList option:selected").each(function () {
+                console.log($(this).text(), $(this).val());
+                let summaryOfReceivedMasterId = $(this).val();
+                let labelText = $(this).text();
+                listAllSummaryOfReceived = listAllSummaryOfReceived.filter((item) => item.summaryOfReceivedMasterId !== summaryOfReceivedMasterId);
+                PushSORData(labelText, 0, summaryOfReceivedMasterId, "", "", "");
+            });
+            listAllSummaryOfReceived.forEach(function (data) {
+                PopSORData(data.summaryOfReceivedMasterId)
+            });
+            updateJSON_initSORTable();
+        }
+        function PushSORData(labelText,OrderDetailId, SummaryOfReceivedMasterId, CompanyName, ModelNumber, SerialNumber) {
+            debugger
+            if (JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId === SummaryOfReceivedMasterId).length === 0) {
+                JSON_initSORTable.push({
+                    Id: JSON_initSORTable.length + 1,
+                    LabelText: labelText,
+                    OrderDetailId: OrderDetailId,
+                    SummaryOfReceivedMasterId: SummaryOfReceivedMasterId,
+                    CompanyName: CompanyName,
+                    ModelNumber: ModelNumber,
+                    SerialNumber: SerialNumber
+                });
+                
+            }
+        }
+        function PopSORData(idToRemove) {
+            debugger
+            JSON_initSORTable = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId !== idToRemove);
+            //console.log(filteredData)
+        }
+        function updateJSON_initSORTable() {
+            $("#ts234").dataTable().fnDestroy();
+
+            $('#ts234').dataTable({
+                "aaData": JSON_initSORTable,
+                "aDataSort": [1, 'asc'],
+                "aoColumns": [
+                    { title: "Id ", "data": "Id" },
+                    { title: "Id ", "data": "OrderDetailId", visible: false },
+                    {
+                        title: "Item Name ", "data": "LabelText",
+                        render: function (data, type, row) {
+                            console.log(row);
+                            return '<input class="form-control labelTextInput" disabled readonly id="Markup" name="Markup" type="text"  value = ' + row.LabelText + '  >';
+                        }
+                    },
+
+                    {
+                        "sTitle": "Company Name",
+                        "mData": "CompanyName",
+                        render: function (data, type, row) {
+                            console.log(row);
+                            return '<input class="form-control companyNameInput" id="CompanyName" name="CompanyName" type="text"  value = ' + row.CompanyName + '  >';
+                        }
+                    },
+                    {
+                        "sTitle": "Model Number",
+                        "mData": "ModelNumber",
+                        render: function (data, type, row) {
+                            console.log(row);
+                            return '<input class="form-control modelNumberInput" id="ModelNumber" name="ModelNumber" type="text"  value = ' + row.ModelNumber + '  >';
+                        }
+                    },
+                    {
+                        "sTitle": "Serial Number",
+                        "mData": "SerialNumber",
+                        render: function (data, type, row) {
+                            console.log(row);
+                            return '<input class="form-control serialNumberInput" id="SerialNumber" name="SerialNumber" type="text"  value = ' + row.SerialNumber + '  >';
+                        }
+                    },
+                    {
+                        "sTitle": "ACTION",
+                        render: function (data, type, row) {
+                            console.log(row);
+                            return '<button type="button" class="btn btn-primary " onclick="PopSORData(' + row.SummaryOfReceivedMasterId +');updateJSON_initSORTable();">Remove</button>';
+                        }
+                    },
+                ],
+                "drawCallback": function (settings) {
+                    $(".trackInput").on("change", function () {
+                        debugger
+                        var $row = $(this).parents("tr");
+                        var rowData = table.row($row).data();
+
+                        rowData.MarkupValue = $(this).val();
+
+
+                    })
+                }
+            });
+        }
+
     </script>
 
 }

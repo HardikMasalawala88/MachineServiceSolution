@@ -19,20 +19,21 @@ $(document).ready(function () {
         datatable.fnDraw()
     });
 });
-// Custom filtering function which will search data in column four between two values
+// Custom filtering function which will search data in column 2 between two values
 $.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
-        var min = minDate.val();
-        var max = maxDate.val();
-        var date = new Date(data[1]);
-        if (
-            (min === null && max === null) ||
-            (min === null && date <= max) ||
-            (min <= date && max === null) ||
-            (min <= date && date <= max)
-        ) {
-            return true;
-        }
+            var min = minDate === undefined ? null: minDate.val();
+            var max = maxDate === undefined ? null : maxDate.val();
+            var date = new Date(data[1]);
+            if (
+                (min === null && max === null) ||
+                (min === null && date <= max) ||
+                (min <= date && max === null) ||
+                (min <= date && date <= max)
+            ) {
+                return true;
+            }
+        
         return false;
     }
 );
