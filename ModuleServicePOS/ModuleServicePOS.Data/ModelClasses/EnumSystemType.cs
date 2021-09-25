@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace ModuleServicePOS.Data.ModelClasses
 {
-    public class EnumSystemType
+    public enum SystemType
     {
-        public enum SystemType
-        {
-            LAPTOP,
-            DESKTOP,
-            TABLET
-        }
-    }
+        LAPTOP,
+        DESKTOP,
+        TABLET
+    } 
 }

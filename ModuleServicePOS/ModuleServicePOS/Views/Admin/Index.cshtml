@@ -43,7 +43,7 @@
                     <td>@item.DatePrepared.Value.ToString("yyyy/MM/dd")</td>
                     <td>@item.ClientName</td>
                     <td>@item.MobileNo</td>
-                    <td>@item.Address</td>
+                    <td title="@(item.Address)">@(item.Address.Length > 30 ? string.Concat(item.Address.Substring(0, 30),"...") : item.Address)</td>
                     <td>@item.PreparedBy</td>
                     <td>@item.Model</td>
                     <td>@item.SerialNo</td>

@@ -1,6 +1,5 @@
 ﻿@model ModuleServicePOS.Data.OrderDetailsFormModel
 @using Microsoft.AspNetCore.Http
-@using static ModuleServicePOS.Data.ModelClasses.EnumSystemType;
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Repair";
@@ -26,11 +25,26 @@
         OrderStatusList.Add(new SelectListItem { Text = item, Value = item });
     }
 
+    List<string> selectedSummaryOfReceivedMasterIds = new List<string>();
+    List<ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedOrderDetail> selectedSummaryOfReceived = new List<ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedOrderDetail>();
+
+    if(selectedSummaryOfReceived != null && Model.SummaryOfReceivedOrderDetailsJSON != null)
+    {
+        selectedSummaryOfReceived = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ModuleServicePOS.Data.ModelClasses.SummaryOfReceivedOrderDetail>>(Model.SummaryOfReceivedOrderDetailsJSON);
+
+        foreach (var item in selectedSummaryOfReceived.Select(x => Convert.ToString(x.SummaryOfReceivedMasterId)))
+        {
+            selectedSummaryOfReceivedMasterIds.Add(item);
+        }
+    }
+
+
     Model.SubTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
     Model.GrandTotal = Model.EstimateDetailsList != null ? Model.EstimateDetailsList.Sum(x => x.Amount) : 0;
 }
 
 <form method="post" asp-action="Repair" asp-controller="Admin">
+    <input type="hidden" id="selectedSORIds"  value="" />
     <input type="hidden" asp-for="SummaryOfReceivedOrderDetailsJSON" value="@Model.SummaryOfReceivedOrderDetailsJSON" />
 
     <div class="container">
@@ -80,7 +94,7 @@
             <div class="col">
                 <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
                 <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="@(new SelectList(Model.SummaryDetailsList, "Id", "ItemName"))" onchange="getSummaryData(this);">
+                        asp-items="@(new SelectList(Model.SummaryDetailsList, "Id", "ItemName",@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(selectedSummaryOfReceivedMasterIds))))" onchange="getSummaryData(this);">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="SummaryOfReceivedList"></span>
@@ -98,11 +112,11 @@
         <table id="ts234" class="table table-hover table-fixed makeDatatable">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Item Name</th>
-                    <th>Company Name</th>
-                    <th>Model Number</th>
-                    <th>Serial Number</th>
+                    <th>#</th>
+                    <th>ITEM NAME</th>
+                    <th>COMPANY NAME</th>
+                    <th>MODEL NUMBER</th>
+                    <th>SERIAL NUMBER</th>
                     <th>AMOUNT</th>
                     <th>ACTION</th>
                 </tr>
@@ -130,8 +144,8 @@
         <div class="row mt-2">
             <div class="col">
                 <label asp-for="SystemType"></label>
-                <select asp-for="SystemType" class="selectpicker" multiple data-live-search="true" onse
-                        asp-items="Html.GetEnumSelectList<SystemType>()">
+                <select asp-for="SystemType" class="selectpicker" data-live-search="true" onse
+                        asp-items="Html.GetEnumSelectList<ModuleServicePOS.Data.ModelClasses.SystemType>()">
                     <option disabled>Please select Type</option>
                 </select>
                 <span asp-validation-for="SystemType"></span>
@@ -166,7 +180,7 @@
             </div>
             <div class="col">
                 <label asp-for="SystemPassword"></label>
-                <input type="password" asp-for="SystemPassword" class="form-control" />
+                <input type="text" asp-for="SystemPassword" class="form-control" />
                 <span asp-validation-for="SystemPassword"></span>
             </div>
         </div>
@@ -234,11 +248,12 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
+        var selectedSORIds = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(selectedSummaryOfReceivedMasterIds))');
         var isinitSORTable = false;
         var JSON_initSORTable = [];
         var listAllSummaryOfReceived = [];
         var tableinitSORTable;
-        
+
         function removeEstimate(estimateId) {
             debugger;
             if (confirm("Are You Sure To Delete Estimate..?")) {
@@ -255,8 +270,6 @@
             }
         }
 
-        /*updateJSON_initSORTable();*/
-
         function isNumeric(str) {
             if (typeof str != "string") return false // we only process strings!
             return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
@@ -265,7 +278,6 @@
         function fn_listAllSummaryOfReceived() {
             listAllSummaryOfReceived = [];
             $("#SummaryOfReceivedList option").each(function () {
-                //console.log($(this).text(), $(this).val());
                 if (isNumeric($(this).val())) {
                     listAllSummaryOfReceived.push({
                         SummaryOfReceivedMasterId: $(this).val(),
@@ -277,7 +289,7 @@
         function getSummaryData(element) {
             fn_listAllSummaryOfReceived();
             var listSelectedAllSummaryOfReceived = []
-            
+
             $("#SummaryOfReceivedList option:selected").each(function () {
                 debugger;
                 let SummaryOfReceivedMasterId = parseInt($(this).val());
@@ -309,9 +321,9 @@
 
         function PopSORData(idToRemove) {
             JSON_initSORTable = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId !== idToRemove);
+            $("#SummaryOfReceivedOrderDetailsJSON").val(JSON.stringify(JSON_initSORTable));
         }
         function valueChange(element, SummaryOfReceivedMasterId) {
-            debugger;
             if (element.value) {
                 var data = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId == SummaryOfReceivedMasterId)[0]
                 JSON_initSORTable = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId !== SummaryOfReceivedMasterId)
@@ -330,8 +342,6 @@
         }
         function updateJSON_initSORTable() {
             $("#ts234").dataTable().fnDestroy();
-            /*JSON_initSORTable.push($("#SummaryOfReceivedOrderDetailsJSON").val());*/
-            debugger;
             $('#ts234').dataTable({
                 "aaData": JSON_initSORTable,
                 "aDataSort": [1, 'asc'],
@@ -347,7 +357,7 @@
                     {
                         title: "Item Name ", "data": "LabelText",
                         render: function (data, type, row) {
-                            return '<input class="form-control labelTextInput" disabled readonly id="Markup" name="Markup" type="text"  value = ' + (row.LabelText + "") + '  >';
+                            return '<input class="form-control labelTextInput" disabled readonly id="Markup" name="Markup" type="text"  value = ' + row.LabelText + '  >';
                         }
                     },
 
@@ -355,7 +365,6 @@
                         "sTitle": "Company Name",
                         "mData": "CompanyName",
                         render: function (data, type, row) {
-                            debugger;
                             return '<input class="form-control companyNameInput" id="CompanyName" name="CompanyName" onblur="valueChange(this,' + row.SummaryOfReceivedMasterId + ')" type="text" value=' + row.CompanyName + '  >';
                         }
                     },
@@ -382,20 +391,14 @@
                 ],
                 "drawCallback": function (settings) {
                     $(".trackInput").on("change", function () {
-                        debugger
                         var $row = $(this).parents("tr");
                         var rowData = table.row($row).data();
-
                         rowData.MarkupValue = $(this).val();
-
-
                     })
                 }
             });
         }
         (function () {
-            // your page initialization code here
-            // the DOM will be available here
             fn_listAllSummaryOfReceived();
             JSON_initSORTable = JSON.parse(document.getElementById('SummaryOfReceivedOrderDetailsJSON').value).map(s => ({
                 Id: s.$id,

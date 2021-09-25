@@ -23,13 +23,13 @@ namespace ModuleServicePOS.Service
             _summaryOfReceivedOrderDetailRepository.SaveChanges();
         }
 
-        public void DeleteByOrderId(long id)
+        public void DeleteByOrderId(long orderId)
         {
-            //foreach (var item in GetAllByOrderId(orderId).ToList().Select((value, i) => (value, i)))
-            //{
-            //    _summaryOfReceivedOrderDetailRepository.Remove(_summaryOfReceivedOrderDetailRepository.Get(item.value.Id));
-            //    _summaryOfReceivedOrderDetailRepository.SaveChanges();
-            //}
+            foreach (var item in GetAllByOrderId(orderId).ToList().Select((value, i) => (value, i)))
+            {
+                _summaryOfReceivedOrderDetailRepository.Remove(_summaryOfReceivedOrderDetailRepository.Get(item.value.Id));
+                _summaryOfReceivedOrderDetailRepository.SaveChanges();
+            }
         }
 
         public SummaryOfReceivedOrderDetail Get(long id)

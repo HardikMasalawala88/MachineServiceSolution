@@ -3,7 +3,6 @@ using ModuleServicePOS.Data.ModelClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static ModuleServicePOS.Data.ModelClasses.EnumSystemType;
 
 namespace ModuleServicePOS.Data
 {
@@ -68,7 +67,6 @@ namespace ModuleServicePOS.Data
         public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
         public virtual IEnumerable<SummaryOfReceivedMaster> SummaryDetailsList { get; set; }
         public virtual IEnumerable<SummaryOfReceivedOrderDetailFromModel> SummaryOfReceivedOrderDetails { get; set; }
-
         
     }
 }
