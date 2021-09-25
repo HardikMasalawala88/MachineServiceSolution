@@ -234,6 +234,11 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
+        var isinitSORTable = false;
+        var JSON_initSORTable = [];
+        var listAllSummaryOfReceived = [];
+        var tableinitSORTable;
+        
         function removeEstimate(estimateId) {
             debugger;
             if (confirm("Are You Sure To Delete Estimate..?")) {
@@ -250,39 +255,40 @@
             }
         }
 
-        var isinitSORTable = false;
-        var JSON_initSORTable = [];
-        var tableinitSORTable;
-        updateJSON_initSORTable();
+        /*updateJSON_initSORTable();*/
 
         function isNumeric(str) {
             if (typeof str != "string") return false // we only process strings!
             return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
                 !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
         }
-        function getSummaryData(element) {
-            var listAllSummaryOfReceived = []
-            var listSelectedAllSummaryOfReceived = []
+        function fn_listAllSummaryOfReceived() {
+            listAllSummaryOfReceived = [];
             $("#SummaryOfReceivedList option").each(function () {
                 //console.log($(this).text(), $(this).val());
                 if (isNumeric($(this).val())) {
                     listAllSummaryOfReceived.push({
-                        summaryOfReceivedMasterId: $(this).val(),
+                        SummaryOfReceivedMasterId: $(this).val(),
                         labelText: $(this).text()
                     })
                 }
             });
+        }
+        function getSummaryData(element) {
+            fn_listAllSummaryOfReceived();
+            var listSelectedAllSummaryOfReceived = []
+            
             $("#SummaryOfReceivedList option:selected").each(function () {
                 debugger;
-                let summaryOfReceivedMasterId = parseInt($(this).val());
+                let SummaryOfReceivedMasterId = parseInt($(this).val());
                 let labelText = $(this).text();
 
-                listSelectedAllSummaryOfReceived.push(listAllSummaryOfReceived.filter((item) => item.summaryOfReceivedMasterId === summaryOfReceivedMasterId));
-                PushSORData(labelText, summaryOfReceivedMasterId, "", "", "");
+                listSelectedAllSummaryOfReceived.push(listAllSummaryOfReceived.filter((item) => item.SummaryOfReceivedMasterId === SummaryOfReceivedMasterId));
+                PushSORData(labelText, SummaryOfReceivedMasterId, "", "", "");
             });
             listAllSummaryOfReceived.forEach(function (data) {
-                if (listSelectedAllSummaryOfReceived.filter((item) => item.summaryOfReceivedMasterId !== data.summaryOfReceivedMasterId).length == 0) {
-                    PopSORData(data.summaryOfReceivedMasterId)
+                if (listSelectedAllSummaryOfReceived.filter((item) => item.SummaryOfReceivedMasterId !== data.SummaryOfReceivedMasterId).length == 0) {
+                    PopSORData(data.SummaryOfReceivedMasterId)
                 }
             });
             updateJSON_initSORTable();
@@ -387,7 +393,20 @@
                 }
             });
         }
-
+        (function () {
+            // your page initialization code here
+            // the DOM will be available here
+            fn_listAllSummaryOfReceived();
+            JSON_initSORTable = JSON.parse(document.getElementById('SummaryOfReceivedOrderDetailsJSON').value).map(s => ({
+                Id: s.$id,
+                LabelText: listAllSummaryOfReceived.filter(item => item.SummaryOfReceivedMasterId == s.SummaryOfReceivedMasterId)[0].labelText.trim(),
+                SummaryOfReceivedMasterId: s.SummaryOfReceivedMasterId,
+                CompanyName: s.CompanyName,
+                ModelNumber: s.ModelNumber,
+                SerialNumber: s.SerialNumber
+            }));
+            updateJSON_initSORTable();
+        })();
     </script>
 
 }

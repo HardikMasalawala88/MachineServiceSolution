@@ -55,11 +55,40 @@ namespace ModuleServicePOS.Controllers
                     OrderDetailId = estimateDetails.OrderDetailId
                 };
             }
+            IEnumerable<SummaryOfReceivedOrderDetailFromModel> _mappigSummaryOfReceivedOrderDetailFromModels(List<SummaryOfReceivedOrderDetail> toList) {
 
+                List<SummaryOfReceivedOrderDetailFromModel> summaryOfReceivedOrderDetailFromModels = new List<SummaryOfReceivedOrderDetailFromModel>();
+                //    { 
+                //.Select(item => {
+                //     new SummaryOfReceivedOrderDetailFromModel
+                //     {
+                //         CompanyName = item.CompanyName,
+                //         ModelNumber = item.ModelNumber,
+                //         OrderDetailId = item.OrderDetailId,
+                //         SerialNumber = item.SerialNumber,
+                //         SummaryOfReceivedMasterId = item.SummaryOfReceivedMasterId
+                //     };
+                // })
+                //}
+                foreach(var item in toList)
+                {
+                    summaryOfReceivedOrderDetailFromModels.Add(
+                             new SummaryOfReceivedOrderDetailFromModel
+                             {
+                                 CompanyName = item.CompanyName,
+                                 ModelNumber = item.ModelNumber,
+                                 OrderDetailId = item.OrderDetailId,
+                                 SerialNumber = item.SerialNumber,
+                                 SummaryOfReceivedMasterId = item.SummaryOfReceivedMasterId
+                             });
+                }
+                return summaryOfReceivedOrderDetailFromModels;
+                
+            }
+           
             #endregion
             OrderDetailsFormModel orderDetails = new OrderDetailsFormModel();
-            var SummaryData = _summaryOfReceivedMasterService.GetAll();
-            orderDetails.SummaryDetailsList = SummaryData;
+            
             if (id > 0)
             {
                 var orderDetailItem = _orderService.GetOrder(id);
@@ -81,18 +110,15 @@ namespace ModuleServicePOS.Controllers
                 };
                 //orderDetails.SummaryOfReceivedList = _summaryOfReceivedService.GetAllByOrderId(id).ToList().Select(x => x.ItemName);
                 orderDetails.EstimateDetailsList = _estimateDetailService.GetAllByOrderId(id).Where(x => x.IsDelete != true).ToList().Select(item => _mappingEstimateDetailsToEstimateDetailsFormModel(item));
-                orderDetails.SummaryOfReceivedOrderDetails = _summaryOfReceivedOrderDetailService.GetAllByOrderId(id).ToList();
-                orderDetails.SummaryOfReceivedOrderDetailsJSON = JsonConvert.SerializeObject(orderDetails.SummaryOfReceivedOrderDetails, Formatting.Indented,
-                        new JsonSerializerSettings
-                        {
-                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                        }); 
-                //JsonConvert.SerializeObject(orderDetails.SummaryOfReceivedOrderDetails);
+                orderDetails.SummaryOfReceivedOrderDetails = _mappigSummaryOfReceivedOrderDetailFromModels(_summaryOfReceivedOrderDetailService.GetAllByOrderId(id).ToList());
+                orderDetails.SummaryOfReceivedOrderDetailsJSON = JsonConvert.SerializeObject(orderDetails.SummaryOfReceivedOrderDetails, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
             }
             else {
                 orderDetails.PreparedBy = HttpContext.Session.GetString(Constants.UName);
                 orderDetails.SerialNo = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
             }
+            var SummaryData = _summaryOfReceivedMasterService.GetAll();
+            orderDetails.SummaryDetailsList = SummaryData.ToList();
             return View(orderDetails);
         }
 

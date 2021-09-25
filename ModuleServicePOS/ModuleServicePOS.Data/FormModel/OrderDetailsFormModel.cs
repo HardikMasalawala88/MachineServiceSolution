@@ -67,7 +67,7 @@ namespace ModuleServicePOS.Data
         public virtual EstimateDetailsFormModel EstimateDetails { get; set; }
         public virtual IEnumerable<EstimateDetailsFormModel> EstimateDetailsList { get; set; }
         public virtual IEnumerable<SummaryOfReceivedMaster> SummaryDetailsList { get; set; }
-        public virtual IEnumerable<SummaryOfReceivedOrderDetail> SummaryOfReceivedOrderDetails { get; set; }
+        public virtual IEnumerable<SummaryOfReceivedOrderDetailFromModel> SummaryOfReceivedOrderDetails { get; set; }
 
         
     }
