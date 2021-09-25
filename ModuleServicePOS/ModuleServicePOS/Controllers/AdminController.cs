@@ -130,27 +130,43 @@ namespace ModuleServicePOS.Controllers
                 }
             }
 
-            OrderDetail _mappingOrderDetailsFormModelToOrderDetails(OrderDetailsFormModel orderDetailsFormModel) {
-                return new OrderDetail
+            void _summaryOfReceivedOrderUpdate(IEnumerable<SummaryOfReceivedOrderDetail> summaryOfReceivedList, long orderDetailId)
+            {
+                foreach (var item in summaryOfReceivedList)
                 {
-                    Id = orderDetailsFormModel.Id,
-                    Model = orderDetailsFormModel.Model,
-                    Address = orderDetailsFormModel.Address,
-                    SystemType = orderDetailsFormModel.SystemType.ToString(),
-                    OrderStatus = orderDetailsFormModel.OrderStatus.ToString(),
-                    IsClosed = orderDetailsFormModel.IsClosed,
-                    MobileNo = orderDetailsFormModel.MobileNo,
-                    SerialNo = orderDetailsFormModel.SerialNo,
-                    PreparedBy = orderDetailsFormModel.PreparedBy,
-                    ClientName = orderDetailsFormModel.ClientName,
-                    DatePrepared = orderDetailsFormModel.DatePrepared,
-                    TechnicianNote = orderDetailsFormModel.TechnicianNote,
-                    SubTotal = orderDetailsFormModel.SubTotal,
-                    GrandTotal = orderDetailsFormModel.GrandTotal,
-                    SystemPassword = orderDetailsFormModel.SystemPassword,
-                    ProductStatus = String.Join(",", orderDetailsFormModel.ProductStatusList),
-                };
+                    _summaryOfReceivedOrderDetailService.Insert(new SummaryOfReceivedOrderDetail
+                    {
+                        OrderDetailId = orderDetailId,
+                        SummaryOfReceivedMasterId = item.SummaryOfReceivedMasterId,
+                        CompanyName = item.CompanyName,
+                        ModelNumber = item.ModelNumber,
+                        SerialNumber = item.SerialNumber,
+                        ModifiedDate = DateTime.Now,
+                    });
+                }
             }
+
+            OrderDetail _mappingOrderDetailsFormModelToOrderDetails(OrderDetailsFormModel orderDetailsFormModel) {
+            return new OrderDetail
+            {
+                Id = orderDetailsFormModel.Id,
+                Model = orderDetailsFormModel.Model,
+                Address = orderDetailsFormModel.Address,
+                SystemType = orderDetailsFormModel.SystemType.ToString(),
+                OrderStatus = orderDetailsFormModel.OrderStatus.ToString(),
+                IsClosed = orderDetailsFormModel.IsClosed,
+                MobileNo = orderDetailsFormModel.MobileNo,
+                SerialNo = orderDetailsFormModel.SerialNo,
+                PreparedBy = orderDetailsFormModel.PreparedBy,
+                ClientName = orderDetailsFormModel.ClientName,
+                DatePrepared = orderDetailsFormModel.DatePrepared,
+                TechnicianNote = orderDetailsFormModel.TechnicianNote,
+                SubTotal = orderDetailsFormModel.SubTotal,
+                GrandTotal = orderDetailsFormModel.GrandTotal,
+                SystemPassword = orderDetailsFormModel.SystemPassword,
+                ProductStatus = String.Join(",", orderDetailsFormModel.ProductStatusList),
+            };
+        }
             #endregion
             if (ModelState.IsValid)
             {
@@ -166,7 +182,7 @@ namespace ModuleServicePOS.Controllers
                     if (orderDetails.SummaryOfReceivedOrderDetailsJSON.Count() > 0)
                     {
                         _summaryOfReceivedOrderDetailService.DeleteByOrderId(orderDetails.Id);
-                        _summaryOfReceivedOrderInsert(data, record.Id);
+                        _summaryOfReceivedOrderUpdate(data, record.Id);
                     }
                 }
                 else {
