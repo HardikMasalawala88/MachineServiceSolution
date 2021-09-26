@@ -52,7 +52,6 @@ namespace ModuleServicePOS.Data
         public decimal GrandTotal { get; set; }
         public bool IsClosed { get; set; }
 
-        [Required]
         [Display(Name = "System Password")]
         public string SystemPassword { get; set; }
 

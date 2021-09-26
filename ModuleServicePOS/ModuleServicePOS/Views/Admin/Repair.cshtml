@@ -92,12 +92,31 @@
         </div>
         <div class="row mt-2">
             <div class="col">
+                <label asp-for="SystemType"></label>
+                <select asp-for="SystemType" class="selectpicker" data-live-search="true" onse
+                        asp-items="Html.GetEnumSelectList<ModuleServicePOS.Data.ModelClasses.SystemType>()">
+                    <option disabled>Please select Type</option>
+                </select>
+                <span asp-validation-for="SystemType"></span>
+            </div>
+            <div class="col">
                 <label asp-for="SummaryOfReceivedList">Summary Of Received: </label>
                 <select asp-for="SummaryOfReceivedList" class="selectpicker" multiple data-live-search="true" onse
                         asp-items="@(new SelectList(Model.SummaryDetailsList, "Id", "ItemName",@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(selectedSummaryOfReceivedMasterIds))))" onchange="getSummaryData(this);">
                     <option disabled>Please select one</option>
                 </select>
                 <span asp-validation-for="SummaryOfReceivedList"></span>
+            </div>
+            
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <label asp-for="OrderStatus">Order Status: </label>
+                <select asp-for="OrderStatus" class="selectpicker" data-live-search="true" onse
+                        asp-items="@(new SelectList(OrderStatusList, "Text", "Value"))">
+                    <option disabled>Please select Status</option>
+                </select>
+                <span asp-validation-for="ProductStatusList"></span>
             </div>
             <div class="col">
                 <label asp-for="ProductStatusList">Product Status</label>
@@ -118,7 +137,7 @@
                     <th>MODEL NUMBER</th>
                     <th>SERIAL NUMBER</th>
                     <th>AMOUNT</th>
-                    <th>ACTION</th>
+                    @*<th>ACTION</th>*@
                 </tr>
             </thead>
         </table>
@@ -141,24 +160,7 @@
                 <span asp-validation-for="TechnicianNote"></span>
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col">
-                <label asp-for="SystemType"></label>
-                <select asp-for="SystemType" class="selectpicker" data-live-search="true" onse
-                        asp-items="Html.GetEnumSelectList<ModuleServicePOS.Data.ModelClasses.SystemType>()">
-                    <option disabled>Please select Type</option>
-                </select>
-                <span asp-validation-for="SystemType"></span>
-            </div>
-            <div class="col">
-                <label asp-for="OrderStatus">Order Status: </label>
-                <select asp-for="OrderStatus" class="selectpicker" data-live-search="true" onse
-                        asp-items="@(new SelectList(OrderStatusList, "Text", "Value"))">
-                    <option disabled>Please select Status</option>
-                </select>
-                <span asp-validation-for="ProductStatusList"></span>
-            </div>
-        </div>
+
         <div class="row mt-2">
             <div class="col">
                 <label asp-for="SubTotal"></label>
@@ -188,57 +190,57 @@
 
         @{ if (Model.Id > 0)
             {
-                <hr />
-                <div class="row mt-2">
-                    <div class="col">
-                        <button type="button" class="btn btn-outline-primary" id="btnAddEstimate" data-toggle="modal" onclick="frmestimate.reset();" data-target="#modal-NewEstimate">Add Estimate</button>
-                    </div>
-                    <hr class="mt-1 mb-1" />
+            <hr />
+            <div class="row mt-2">
+                <div class="col">
+                    <button type="button" class="btn btn-outline-primary" id="btnAddEstimate" data-toggle="modal" onclick="frmestimate.reset();" data-target="#modal-NewEstimate">Add Estimate</button>
                 </div>
-                <div class="row mt-2">
-                    <div class="col">
-                        <table class="table table-hover table-fixed makeDatatable" id="EstimateDetailslist">
-                            <thead>
-                                <tr>
-                                    <th>DESCRIPTION</th>
-                                    <th>ADDED ON</th>
-                                    <th>AMOUNT</th>
-                                    <th>SERIAL NUMBER</th>
-                                    <th>ACTION</th>
-                                </tr>
-                            </thead>
+                <hr class="mt-1 mb-1" />
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <table class="table table-hover table-fixed makeDatatable" id="EstimateDetailslist">
+                        <thead>
+                            <tr>
+                                <th>DESCRIPTION</th>
+                                <th>ADDED ON</th>
+                                <th>AMOUNT</th>
+                                <th>SERIAL NUMBER</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
 
-                            <tbody>
-                                @{
+                        <tbody>
+                            @{
                                     if (Model.EstimateDetailsList == null)
                                     {
-                                        <tr class="text-center">
-                                            <td colspan="5">NO ESTIMATION ADDED</td>
+                                <tr class="text-center">
+                                    <td colspan="5">NO ESTIMATION ADDED</td>
 
-                                        </tr>
+                                </tr>
                                     }
                                     else
                                     {
-                                        @foreach (var item in Model.EstimateDetailsList)
+                                @foreach (var item in Model.EstimateDetailsList)
                                         {
-                                            <tr>
-                                                <td>@item.Description</td>
-                                                <td>@item.ItemAddDate.Value.ToString("yyyy/MM/dd")</td>
-                                                <td>
-                                                    @String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @item.Amount)
+                                <tr>
+                                    <td>@item.Description</td>
+                                    <td>@item.ItemAddDate.Value.ToString("yyyy/MM/dd")</td>
+                                    <td>
+                                        @String.Format(new System.Globalization.CultureInfo("hi-IN"), "{0:c}", @item.Amount)
 
-                                                </td>
-                                                <td>@item.SerialNo</td>
-                                                <td><button type="button" class="btn btn-danger" onclick="removeEstimate(@item.Id)">Delete</button></td>
-                                            </tr>
+                                    </td>
+                                    <td>@item.SerialNo</td>
+                                    <td><button type="button" class="btn btn-danger" onclick="removeEstimate(@item.Id)">Delete</button></td>
+                                </tr>
                                         }
                                     }
-                                }
+                            }
 
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
             }
         }
 
@@ -280,8 +282,11 @@
             $("#SummaryOfReceivedList option").each(function () {
                 if (isNumeric($(this).val())) {
                     listAllSummaryOfReceived.push({
-                        SummaryOfReceivedMasterId: $(this).val(),
-                        labelText: $(this).text()
+                        SummaryOfReceivedMasterId: parseInt($(this).val()),
+                        LabelText: $(this).text(),
+                        CompanyName: "",
+                        ModelNumber: "",
+                        SerialNumber: ""
                     })
                 }
             });
@@ -295,11 +300,11 @@
                 let SummaryOfReceivedMasterId = parseInt($(this).val());
                 let labelText = $(this).text();
 
-                listSelectedAllSummaryOfReceived.push(listAllSummaryOfReceived.filter((item) => item.SummaryOfReceivedMasterId === SummaryOfReceivedMasterId));
+                listSelectedAllSummaryOfReceived.push(listAllSummaryOfReceived.filter((item) => parseInt(item.SummaryOfReceivedMasterId) === SummaryOfReceivedMasterId)[0]);
                 PushSORData(labelText, SummaryOfReceivedMasterId, "", "", "");
             });
             listAllSummaryOfReceived.forEach(function (data) {
-                if (listSelectedAllSummaryOfReceived.filter((item) => item.SummaryOfReceivedMasterId !== data.SummaryOfReceivedMasterId).length == 0) {
+                if (listSelectedAllSummaryOfReceived.filter((item) => item.SummaryOfReceivedMasterId == data.SummaryOfReceivedMasterId).length == 0) {
                     PopSORData(data.SummaryOfReceivedMasterId)
                 }
             });
@@ -320,7 +325,7 @@
         }
 
         function PopSORData(idToRemove) {
-            JSON_initSORTable = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId !== idToRemove);
+            JSON_initSORTable = JSON_initSORTable.filter((item) => item.SummaryOfReceivedMasterId !== parseInt(idToRemove));
             $("#SummaryOfReceivedOrderDetailsJSON").val(JSON.stringify(JSON_initSORTable));
         }
         function valueChange(element, SummaryOfReceivedMasterId) {
@@ -382,12 +387,12 @@
                             return '<input class="form-control serialNumberInput" id="SerialNumber" name="SerialNumber" onblur="valueChange(this,' + row.SummaryOfReceivedMasterId + ')" type="text"  value=' + row.SerialNumber + '  >';
                         }
                     },
-                    {
-                        "sTitle": "ACTION",
-                        render: function (data, type, row) {
-                            return '<button type="button" class="btn btn-primary " onclick="PopSORData(' + row.SummaryOfReceivedMasterId +');updateJSON_initSORTable();">Remove</button>';
-                        }
-                    },
+                    //{
+                    //    "sTitle": "ACTION",
+                    //    render: function (data, type, row) {
+                    //        return '<button type="button" class="btn btn-primary " onclick="PopSORData(' + row.SummaryOfReceivedMasterId +');updateJSON_initSORTable();">Remove</button>';
+                    //    }
+                    //},
                 ],
                 "drawCallback": function (settings) {
                     $(".trackInput").on("change", function () {
@@ -400,14 +405,16 @@
         }
         (function () {
             fn_listAllSummaryOfReceived();
-            JSON_initSORTable = JSON.parse(document.getElementById('SummaryOfReceivedOrderDetailsJSON').value).map(s => ({
-                Id: s.$id,
-                LabelText: listAllSummaryOfReceived.filter(item => item.SummaryOfReceivedMasterId == s.SummaryOfReceivedMasterId)[0].labelText.trim(),
-                SummaryOfReceivedMasterId: s.SummaryOfReceivedMasterId,
-                CompanyName: s.CompanyName,
-                ModelNumber: s.ModelNumber,
-                SerialNumber: s.SerialNumber
-            }));
+            if (document.getElementById('SummaryOfReceivedOrderDetailsJSON').value) {
+                JSON_initSORTable = JSON.parse(document.getElementById('SummaryOfReceivedOrderDetailsJSON').value).map(s => ({
+                    Id: s.$id,
+                    LabelText: listAllSummaryOfReceived.filter(item => item.SummaryOfReceivedMasterId == s.SummaryOfReceivedMasterId)[0].LabelText.trim(),
+                    SummaryOfReceivedMasterId: s.SummaryOfReceivedMasterId,
+                    CompanyName: s.CompanyName,
+                    ModelNumber: s.ModelNumber,
+                    SerialNumber: s.SerialNumber
+                }));
+            }
             updateJSON_initSORTable();
         })();
     </script>
